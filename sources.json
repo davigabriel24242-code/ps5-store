@@ -1,0 +1,16 @@
+{
+  "sources": [
+    {
+      "repo": "half144/overdrive-releases",
+      "titleid": "PPSA99058",
+      "kind": "app",
+      "license": "MIT"
+    },
+    {
+      "repo": "D3ATHLY/blackbox",
+      "titleid": "PPSA01453",
+      "kind": "app",
+      "license": "GPL-3.0"
+    }
+  ]
+}

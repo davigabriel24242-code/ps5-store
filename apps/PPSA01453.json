@@ -1,0 +1,13 @@
+{
+  "titleid": "PPSA01453",
+  "name": "BlackBox",
+  "kind": "app",
+  "description": "BlackBox 1.0.8",
+  "license": "GPL-3.0",
+  "author": "D3ATHLY",
+  "version": "1.0.8",
+  "source_repo": "https://github.com/D3ATHLY/blackbox",
+  "artifact_url": "https://github.com/D3ATHLY/blackbox/releases/download/v1.0.8/PPSA01453.ffpkg",
+  "sha256": "fd153d081533fcfdbbcc28b626cec516c7a162fb4ba9ee078449cfc1d336d547",
+  "icon_url": "https://raw.githubusercontent.com/D3ATHLY/blackbox/v1.0.8/sce_sys/icon0.png"
+}

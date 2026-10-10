@@ -1,0 +1,13 @@
+{
+  "titleid": "PPSA99003",
+  "name": "etaHEN 2.5B Unified r1 - PS5 11.00-13.60",
+  "kind": "app",
+  "description": "# etaHEN 2.5B Unified r1 — PS5 11.00–13.60\r",
+  "license": "GPL-3.0",
+  "author": "GronedWaffel",
+  "version": "2.5B-unified.1",
+  "source_repo": "https://github.com/GronedWaffel/etahen-11.00-13.60",
+  "artifact_url": "https://github.com/GronedWaffel/etahen-11.00-13.60/releases/download/v2.5B-unified.1/etaHEN-11.00-13.60-source.zip",
+  "sha256": "682abc13ee1a5c19125621330b45686f88c5fe7f25e82c2608d07bd4f07ed456",
+  "icon_url": "https://raw.githubusercontent.com/GronedWaffel/etahen-11.00-13.60/v2.5B-unified.1/sce_sys/icon0.png"
+}
