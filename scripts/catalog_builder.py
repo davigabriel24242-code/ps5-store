@@ -1,5 +1,6 @@
 # language: Python, file: scripts/catalog_builder.py, target: PS5 store catalog
-# *reads sources.json, hits GitHub API, merges metadata.json overrides, writes catalog*
+# *reads sources.json, hits GitHub API, merges metadata.json, writes catalog*
+# *supports two source types: github releases (auto) and manual (games)*
 
 import json
 import os
@@ -66,15 +67,12 @@ def pick_artifact(assets):
 
 
 def resolve_icon(titleid, rel, repo):
-    # 1. icone local no repo (curadoria manual)
     local = ICONS_DIR / (titleid + ".png")
     if local.exists():
         return RAW_BASE + "/icons/" + titleid + ".png"
-    # 2. asset png do release
     for a in rel.get("assets", []):
         if a["name"].lower().endswith((".png", ".jpg", ".jpeg", ".webp")):
             return a["browser_download_url"]
-    # 3. fallback: convencao do repo
     return "https://raw.githubusercontent.com/" + repo + "/" + rel["tag_name"] + "/sce_sys/icon0.png"
 
 
@@ -111,6 +109,33 @@ def build_record(src, meta_db):
         "artifact_url": asset["browser_download_url"],
         "sha256": sha,
         "icon_url": resolve_icon(titleid, rel, repo),
+        "featured": src.get("featured", False),
+    }
+
+
+def build_manual(src, meta_db):
+    titleid = src["titleid"]
+    meta = meta_db.get(titleid, {})
+    downloads = src.get("downloads", [])
+    return {
+        "titleid": titleid,
+        "name": meta.get("display_name") or src.get("name", titleid),
+        "kind": src.get("kind", "game"),
+        "category": meta.get("category") or src.get("category", "Jogo"),
+        "description": meta.get("description") or src.get("description", ""),
+        "hero_tag": meta.get("hero_tag"),
+        "meta_line": meta.get("meta_line"),
+        "license": src.get("license"),
+        "author": src.get("author", "-"),
+        "version": src.get("version", "01.000"),
+        "source_repo": src.get("source_repo"),
+        "artifact_url": downloads[0].get("url") if downloads else None,
+        "downloads": downloads,
+        "sha256": None,
+        "icon_url": None,
+        "featured": src.get("featured", False),
+        "region": src.get("region"),
+        "size_gb": src.get("size_gb"),
     }
 
 
@@ -119,19 +144,26 @@ def main():
     meta_db = load_metadata()
     APPS_DIR.mkdir(exist_ok=True)
     ICONS_DIR.mkdir(exist_ok=True)
+
     records = []
     for src in srcs:
         try:
-            rec = build_record(src, meta_db)
+            if src.get("manual"):
+                rec = build_manual(src, meta_db)
+            else:
+                rec = build_record(src, meta_db)
             if not rec:
                 continue
             records.append(rec)
-            (APPS_DIR / (rec["titleid"] + ".json")).write_text(
-                json.dumps(rec, indent=2, ensure_ascii=False), encoding="utf-8"
-            )
+            out = APPS_DIR / (rec["titleid"] + ".json")
+            out.write_text(json.dumps(rec, indent=2, ensure_ascii=False), encoding="utf-8")
             print("[ok] " + rec["titleid"] + "  " + rec["name"] + "  v" + rec["version"])
         except Exception as e:
-            print("[err] " + src["repo"] + ": " + str(e), file=sys.stderr)
+            print("[err] " + src.get("repo", src.get("titleid", "?")) + ": " + str(e), file=sys.stderr)
+
+    # featured primeiro
+    records.sort(key=lambda r: (not r.get("featured", False), r.get("name", "")))
+
     index = {
         "schema": "ps5-store-index/v1",
         "updated": datetime.now(timezone.utc).isoformat(),
@@ -143,6 +175,7 @@ def main():
         ],
     }
     INDEX_PATH.write_text(json.dumps(index, indent=2, ensure_ascii=False), encoding="utf-8")
+
     store = {
         "schema": "ps5-store-catalog/v1",
         "updated": index["updated"],

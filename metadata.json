@@ -12,5 +12,12 @@
     "description": "Suíte de ferramentas e exploração para PS5. Inspeção de sistema, gerenciamento de arquivos e diagnóstico do console.",
     "hero_tag": "Em destaque · Diagnóstico",
     "meta_line": "Sistema · etaHEN · Livre"
+  },
+  "PPSA17019": {
+    "display_name": "The 7th Guest VR",
+    "category": "Aventura",
+    "description": "Remake em VR do clássico de 1993. Você explora a mansão Stauf em primeira pessoa, resolve enigmas e descobre o que aconteceu ali.",
+    "hero_tag": "Em destaque · Aventura VR",
+    "meta_line": "1 jogador · Inglês · 16 anos"
   }
 }

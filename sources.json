@@ -11,6 +11,26 @@
       "titleid": "PPSA01453",
       "kind": "app",
       "license": "GPL-3.0"
+    },
+    {
+      "manual": true,
+      "titleid": "PPSA17019",
+      "kind": "game",
+      "name": "The 7th Guest VR",
+      "author": "Vertigo Games",
+      "version": "01.006",
+      "license": null,
+      "category": "Aventura",
+      "featured": true,
+      "downloads": [
+        {
+          "host": "akirabox",
+          "label": "AkiraBox · pt.1",
+          "url": "https://akirabox.to/QN9mEq51xm6d/file",
+          "size_gb": 38.4,
+          "password": null
+        }
+      ]
     }
   ]
 }

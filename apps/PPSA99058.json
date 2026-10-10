@@ -12,5 +12,6 @@
   "source_repo": "https://github.com/half144/overdrive-releases",
   "artifact_url": "https://github.com/half144/overdrive-releases/releases/download/v0.0.109/Overdrive-PPSA99058.exfat.zip",
   "sha256": "351020d01ae759abfab13db5931a22e0bc0e8b3bc46daaca88bd8b615b1f1a8b",
-  "icon_url": "https://raw.githubusercontent.com/davigabriel24242-code/ps5-store/main/icons/PPSA99058.png"
+  "icon_url": "https://raw.githubusercontent.com/davigabriel24242-code/ps5-store/main/icons/PPSA99058.png",
+  "featured": false
 }

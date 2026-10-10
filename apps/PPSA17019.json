@@ -1,0 +1,28 @@
+{
+  "titleid": "PPSA17019",
+  "name": "The 7th Guest VR",
+  "kind": "game",
+  "category": "Aventura",
+  "description": "Remake em VR do clássico de 1993. Você explora a mansão Stauf em primeira pessoa, resolve enigmas e descobre o que aconteceu ali.",
+  "hero_tag": "Em destaque · Aventura VR",
+  "meta_line": "1 jogador · Inglês · 16 anos",
+  "license": null,
+  "author": "Vertigo Games",
+  "version": "01.006",
+  "source_repo": null,
+  "artifact_url": "https://akirabox.to/QN9mEq51xm6d/file",
+  "downloads": [
+    {
+      "host": "akirabox",
+      "label": "AkiraBox · pt.1",
+      "url": "https://akirabox.to/QN9mEq51xm6d/file",
+      "size_gb": 38.4,
+      "password": null
+    }
+  ],
+  "sha256": null,
+  "icon_url": null,
+  "featured": true,
+  "region": null,
+  "size_gb": null
+}

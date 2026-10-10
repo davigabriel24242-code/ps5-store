@@ -1,23 +1,35 @@
 {
   "schema": "ps5-store-catalog/v1",
-  "updated": "2026-10-10T19:29:35.963271+00:00",
-  "count": 2,
+  "updated": "2026-10-10T20:01:40.074258+00:00",
+  "count": 3,
   "apps": [
     {
-      "titleid": "PPSA99058",
-      "name": "Overdrive",
-      "kind": "app",
-      "category": "Utilitário",
-      "description": "Gerenciador de downloads e instalador homebrew para PS5. Baixa, extrai e monta pacotes direto do console, com fila persistente e verificação de hash.",
-      "hero_tag": "Em destaque · Utilitário",
-      "meta_line": "Sistema · etaHEN · Livre",
-      "license": "MIT",
-      "author": "half144",
-      "version": "0.0.109",
-      "source_repo": "https://github.com/half144/overdrive-releases",
-      "artifact_url": "https://github.com/half144/overdrive-releases/releases/download/v0.0.109/Overdrive-PPSA99058.exfat.zip",
-      "sha256": "351020d01ae759abfab13db5931a22e0bc0e8b3bc46daaca88bd8b615b1f1a8b",
-      "icon_url": "https://raw.githubusercontent.com/davigabriel24242-code/ps5-store/main/icons/PPSA99058.png"
+      "titleid": "PPSA17019",
+      "name": "The 7th Guest VR",
+      "kind": "game",
+      "category": "Aventura",
+      "description": "Remake em VR do clássico de 1993. Você explora a mansão Stauf em primeira pessoa, resolve enigmas e descobre o que aconteceu ali.",
+      "hero_tag": "Em destaque · Aventura VR",
+      "meta_line": "1 jogador · Inglês · 16 anos",
+      "license": null,
+      "author": "Vertigo Games",
+      "version": "01.006",
+      "source_repo": null,
+      "artifact_url": "https://akirabox.to/QN9mEq51xm6d/file",
+      "downloads": [
+        {
+          "host": "akirabox",
+          "label": "AkiraBox · pt.1",
+          "url": "https://akirabox.to/QN9mEq51xm6d/file",
+          "size_gb": 38.4,
+          "password": null
+        }
+      ],
+      "sha256": null,
+      "icon_url": null,
+      "featured": true,
+      "region": null,
+      "size_gb": null
     },
     {
       "titleid": "PPSA01453",
@@ -33,7 +45,25 @@
       "source_repo": "https://github.com/D3ATHLY/blackbox",
       "artifact_url": "https://github.com/D3ATHLY/blackbox/releases/download/v1.0.8/PPSA01453.ffpkg",
       "sha256": "fd153d081533fcfdbbcc28b626cec516c7a162fb4ba9ee078449cfc1d336d547",
-      "icon_url": "https://raw.githubusercontent.com/davigabriel24242-code/ps5-store/main/icons/PPSA01453.png"
+      "icon_url": "https://raw.githubusercontent.com/davigabriel24242-code/ps5-store/main/icons/PPSA01453.png",
+      "featured": false
+    },
+    {
+      "titleid": "PPSA99058",
+      "name": "Overdrive",
+      "kind": "app",
+      "category": "Utilitário",
+      "description": "Gerenciador de downloads e instalador homebrew para PS5. Baixa, extrai e monta pacotes direto do console, com fila persistente e verificação de hash.",
+      "hero_tag": "Em destaque · Utilitário",
+      "meta_line": "Sistema · etaHEN · Livre",
+      "license": "MIT",
+      "author": "half144",
+      "version": "0.0.109",
+      "source_repo": "https://github.com/half144/overdrive-releases",
+      "artifact_url": "https://github.com/half144/overdrive-releases/releases/download/v0.0.109/Overdrive-PPSA99058.exfat.zip",
+      "sha256": "351020d01ae759abfab13db5931a22e0bc0e8b3bc46daaca88bd8b615b1f1a8b",
+      "icon_url": "https://raw.githubusercontent.com/davigabriel24242-code/ps5-store/main/icons/PPSA99058.png",
+      "featured": false
     }
   ]
 }

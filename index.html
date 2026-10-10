@@ -2,261 +2,423 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<title>Pipow Store</title>
+<title>PIPOW STORE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0d14;
-    --bg-2: #0f1420;
-    --fg: #eaeef7;
-    --muted: #8a94a8;
-    --accent: #4a7fff;
-    --accent-2: #6b95ff;
-    --focus: #7ba7ff;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; }
-  body {
-    background: var(--bg);
-    color: var(--fg);
-    font-family: -apple-system, "Segoe UI", "Inter", Roboto, sans-serif;
-    overflow-x: hidden;
-    min-height: 100vh;
-  }
+:root {
+  --fundo: #080C17;
+  --azul: #426BFF;
+  --azul-hi: #5478ff;
+  --ciano: #55DDFF;
+  --texto: #F6F8FF;
+  --muted: #8A94A8;
+  --muted-2: #566076;
+  --safe-x: clamp(40px, 4.5vw, 96px);
+  --safe-y: clamp(20px, 2.5vw, 44px);
+  --t: 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: "Inter", -apple-system, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
 
-  /* ---------- nav ---------- */
-  nav {
-    position: sticky; top: 0; z-index: 50;
-    display: flex; align-items: center; gap: 40px;
-    padding: 20px 48px;
-    background: linear-gradient(180deg, rgba(10,13,20,0.9), rgba(10,13,20,0.4));
-    backdrop-filter: blur(12px);
-  }
-  .logo {
-    display: flex; align-items: center; gap: 10px;
-    font-weight: 800; letter-spacing: 0.08em; font-size: 18px;
-  }
-  .logo-mark {
-    width: 26px; height: 26px; border-radius: 6px;
-    background: linear-gradient(135deg, var(--accent), #2a4fa8);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 900; color: #fff;
-  }
-  .nav-links {
-    display: flex; gap: 32px; flex: 1;
-    font-size: 14px; font-weight: 500;
-  }
-  .nav-links a {
-    color: var(--muted); text-decoration: none; position: relative;
-    padding-bottom: 6px; transition: color 0.15s;
-  }
-  .nav-links a.active { color: var(--fg); }
-  .nav-links a.active::after {
-    content: ""; position: absolute; left: 0; right: 0; bottom: 0;
-    height: 2px; background: var(--accent);
-  }
-  .nav-right {
-    display: flex; align-items: center; gap: 14px;
-    font-size: 14px; color: var(--muted);
-  }
-  .avatar {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: linear-gradient(135deg, #4a7fff, #7b3fff);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700; color: #fff;
-  }
+/* ---------- NAV — transparente sobre o hero ---------- */
+nav {
+  position: absolute; top: 0; left: 0; right: 0;
+  z-index: 50;
+  display: flex; align-items: center; gap: 40px;
+  padding: var(--safe-y) var(--safe-x);
+  pointer-events: none;
+}
+nav * { pointer-events: auto; }
 
-  /* ---------- hero ---------- */
-  .hero {
-    position: relative;
-    padding: 60px 48px 40px;
-    min-height: 520px;
-    display: flex; flex-direction: column; justify-content: center;
-    background:
-      radial-gradient(circle at 75% 40%, rgba(74,127,255,0.18), transparent 55%),
-      radial-gradient(circle at 20% 80%, rgba(120,60,255,0.10), transparent 50%),
-      linear-gradient(180deg, transparent, var(--bg));
-    overflow: hidden;
-  }
-  .hero::before {
-    content: "";
-    position: absolute; inset: 0;
-    background-image:
-      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4), transparent),
-      radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,0.3), transparent),
-      radial-gradient(1px 1px at 85% 45%, rgba(255,255,255,0.5), transparent),
-      radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.25), transparent),
-      radial-gradient(1px 1px at 75% 80%, rgba(255,255,255,0.3), transparent);
-    opacity: 0.6; pointer-events: none;
-  }
-  .hero-content { position: relative; max-width: 640px; z-index: 2; }
-  .hero-tag {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.22em;
-    color: var(--accent-2); text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-  .hero-title {
-    font-size: clamp(48px, 7vw, 84px);
-    font-weight: 900; letter-spacing: 0.06em;
-    line-height: 0.95; text-transform: uppercase;
-    margin-bottom: 18px;
-  }
-  .hero-sub {
-    font-size: clamp(18px, 2vw, 24px);
-    font-weight: 500; letter-spacing: 0.03em;
-    color: #d5dbe8; margin-bottom: 22px;
-  }
-  .hero-desc {
-    font-size: 15px; line-height: 1.6; color: var(--muted);
-    max-width: 520px; margin-bottom: 26px;
-  }
-  .hero-meta {
-    display: flex; gap: 22px; font-size: 12.5px;
-    color: var(--muted); margin-bottom: 30px;
-  }
-  .hero-meta span::before { content: "· "; margin-right: 4px; color: #3a4254; }
-  .hero-meta span:first-child::before { content: none; }
-  .hero-actions { display: flex; gap: 14px; margin-bottom: 20px; }
-  .btn {
-    border: none; cursor: pointer;
-    padding: 14px 26px; border-radius: 6px;
-    font-size: 14px; font-weight: 600; letter-spacing: 0.04em;
-    display: inline-flex; align-items: center; gap: 10px;
-    transition: transform 0.12s, background 0.15s;
-    font-family: inherit;
-  }
-  .btn-primary {
-    background: var(--accent); color: #fff;
-    box-shadow: 0 6px 24px rgba(74,127,255,0.35);
-  }
-  .btn-primary:hover { background: var(--accent-2); transform: translateY(-1px); }
-  .btn-ghost {
-    background: rgba(255,255,255,0.06); color: var(--fg);
-    border: 1px solid rgba(255,255,255,0.1);
-  }
-  .btn-ghost:hover { background: rgba(255,255,255,0.12); }
-  .btn svg { width: 16px; height: 16px; }
-  .hero-note { font-size: 12px; color: var(--muted); }
+.logo {
+  display: flex; align-items: center; gap: 12px;
+  flex-shrink: 0;
+}
+.logo-mark svg { width: 40px; height: 40px; display: block; }
+.logo-text {
+  font-family: "Orbitron", sans-serif;
+  font-weight: 800; font-size: 18px;
+  letter-spacing: 0.06em;
+  line-height: 1.05;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.logo-text .top { color: #fff; }
+.logo-text .store {
+  font-size: 10px; letter-spacing: 0.5em;
+  color: var(--ciano); font-weight: 600;
+  display: flex; align-items: center; gap: 6px;
+}
+.logo-text .store::before,
+.logo-text .store::after {
+  content: ""; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ciano));
+}
+.logo-text .store::after {
+  background: linear-gradient(90deg, var(--ciano), transparent);
+}
 
-  /* indicador de slides */
-  .hero-dots {
-    position: absolute; bottom: 40px; right: 48px;
-    display: flex; align-items: center; gap: 12px;
-    font-size: 12px; color: var(--muted); z-index: 2;
-  }
-  .hero-dots .bar { width: 32px; height: 2px; background: var(--accent); border-radius: 2px; }
-  .hero-dots .bar.off { background: rgba(255,255,255,0.15); }
+.nav-links {
+  display: flex; gap: 38px;
+  flex: 1; justify-content: center;
+  font-size: 15px; font-weight: 500;
+}
+.nav-links a {
+  color: rgba(246,248,255,0.6);
+  text-decoration: none;
+  padding: 4px 0 8px; position: relative;
+  transition: color var(--t);
+}
+.nav-links a.active { color: #fff; font-weight: 600; }
+.nav-links a.active::after {
+  content: ""; position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 2px; background: var(--ciano);
+  border-radius: 2px;
+}
+.nav-links a:hover { color: #fff; }
 
-  /* ---------- grid ---------- */
-  .section {
-    padding: 20px 48px 60px;
-  }
-  .section-head {
-    display: flex; align-items: baseline; justify-content: space-between;
-    margin-bottom: 22px;
-  }
-  .section-title {
-    font-size: 26px; font-weight: 800; letter-spacing: 0.01em;
-  }
-  .section-more {
-    font-size: 13px; color: var(--muted); cursor: pointer;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .section-more:hover { color: var(--fg); }
+.nav-right {
+  display: flex; align-items: center; gap: 14px;
+  font-size: 14px; color: #fff;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, #5b7bff, #426BFF);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #fff;
+  letter-spacing: 0.02em;
+}
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-  }
-  @media (max-width: 1280px) { .grid { grid-template-columns: repeat(4, 1fr); } }
-  @media (max-width: 960px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 680px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
+/* ---------- HERO ---------- */
+.hero {
+  position: relative;
+  min-height: 62vh;
+  display: flex;
+  align-items: center;
+  padding: 140px var(--safe-x) 60px;
+  overflow: hidden;
+}
 
-  .card {
-    display: flex; flex-direction: column; gap: 12px;
-    cursor: pointer; outline: none;
-  }
-  .card-thumb {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    border-radius: 8px; overflow: hidden;
-    background: linear-gradient(135deg, #1a2340, #2a1a50);
-    transition: transform 0.18s, box-shadow 0.18s, outline 0.12s;
-  }
-  .card-thumb img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-  }
-  .card-fallback {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 42px; font-weight: 900; letter-spacing: 0.05em;
-    color: rgba(255,255,255,0.85);
-    text-shadow: 0 2px 20px rgba(0,0,0,0.4);
-  }
-  .card-badge {
-    position: absolute; top: 10px; right: 10px;
-    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
-    padding: 4px 8px; border-radius: 4px;
-    background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
-    color: #fff;
-  }
-  .card-badge.installed { background: rgba(34,160,90,0.9); }
-  .card-badge.update    { background: rgba(220,160,30,0.95); color: #000; }
-  .card-badge.new       { background: var(--accent); }
+/* atmosfera de fundo — aparece mesmo sem imagem */
+.hero-atmo {
+  position: absolute; inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 82% 38%, rgba(85,221,255,0.10) 0%, transparent 28%),
+    radial-gradient(circle at 78% 52%, rgba(66,107,255,0.14) 0%, transparent 42%),
+    radial-gradient(circle at 88% 65%, rgba(123,90,255,0.07) 0%, transparent 45%),
+    radial-gradient(circle at 15% 85%, rgba(85,221,255,0.04) 0%, transparent 50%);
+  pointer-events: none;
+}
 
-  .card:hover .card-thumb,
-  .card.focused .card-thumb {
-    transform: scale(1.03);
-    box-shadow: 0 12px 40px rgba(74,127,255,0.25);
-  }
-  .card.focused .card-thumb {
-    outline: 2px solid var(--focus);
-    outline-offset: 3px;
-  }
-  .card-name {
-    font-size: 15px; font-weight: 700;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .card-cat {
-    font-size: 12px; color: var(--muted);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .card-cat .ver { color: #566076; }
+/* imagem de fundo (quando existir) */
+.hero-bg {
+  position: absolute; inset: 0;
+  z-index: 1;
+  background-image: var(--hero-img, none);
+  background-size: cover;
+  background-position: center right;
+  opacity: 0;
+  transition: opacity 500ms var(--t);
+}
+.hero-bg.on { opacity: 1; }
+.hero-bg::after {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg,
+      var(--fundo) 0%,
+      rgba(8,12,23,0.86) 26%,
+      rgba(8,12,23,0.35) 52%,
+      rgba(8,12,23,0.15) 72%,
+      rgba(8,12,23,0.55) 100%),
+    linear-gradient(180deg,
+      rgba(8,12,23,0.35) 0%,
+      transparent 22%,
+      transparent 78%,
+      var(--fundo) 100%);
+  pointer-events: none;
+}
 
-  /* ---------- footer / hints ---------- */
-  footer {
-    position: fixed; left: 0; right: 0; bottom: 0;
-    padding: 12px 48px;
-    background: linear-gradient(0deg, rgba(10,13,20,0.95), rgba(10,13,20,0));
-    display: flex; align-items: center; justify-content: space-between;
-    font-size: 12px; color: var(--muted);
-    pointer-events: none;
-  }
-  .hints { display: flex; gap: 24px; }
-  .hint { display: flex; align-items: center; gap: 8px; }
-  .hint .key {
-    display: inline-flex; align-items: center; justify-content: center;
-    min-width: 22px; height: 22px; padding: 0 6px;
-    border-radius: 4px; background: rgba(255,255,255,0.08);
-    font-size: 11px; font-weight: 700; color: var(--fg);
-  }
-  .foot-right { color: var(--muted); }
+/* partículas estelares sutis */
+.hero-stars {
+  position: absolute; inset: 0;
+  z-index: 2;
+  background-image:
+    radial-gradient(1px 1px at 20% 25%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 62% 18%, rgba(255,255,255,0.35), transparent),
+    radial-gradient(1px 1px at 88% 40%, rgba(255,255,255,0.45), transparent),
+    radial-gradient(1px 1px at 45% 72%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 72% 82%, rgba(255,255,255,0.35), transparent),
+    radial-gradient(1px 1px at 32% 55%, rgba(255,255,255,0.25), transparent);
+  pointer-events: none;
+  opacity: 0.55;
+}
 
-  /* status */
-  .status {
-    padding: 8px 48px; font-size: 12px; color: var(--muted);
-    min-height: 20px;
-  }
-  .status.err { color: #ff7a7a; }
+.hero-content {
+  position: relative;
+  max-width: 640px;
+  z-index: 3;
+}
+
+.hero-tag {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.24em;
+  color: var(--ciano);
+  text-transform: uppercase;
+  margin-bottom: 26px;
+}
+.hero-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(64px, 7.2vw, 124px);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  color: #fff;
+}
+.hero-sub {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(20px, 1.5vw, 26px);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: rgba(246,248,255,0.88);
+  margin-bottom: 26px;
+}
+.hero-desc {
+  font-size: clamp(15px, 1vw, 17px);
+  line-height: 1.55;
+  color: rgba(246,248,255,0.72);
+  max-width: 500px;
+  margin-bottom: 26px;
+}
+.hero-meta {
+  display: flex; gap: 20px;
+  font-size: 13px;
+  color: rgba(246,248,255,0.55);
+  margin-bottom: 34px;
+}
+.hero-meta span { white-space: nowrap; }
+.hero-meta span + span::before {
+  content: "·";
+  margin-right: 20px;
+  opacity: 0.6;
+}
+
+/* CTA */
+.hero-actions {
+  display: flex; gap: 12px;
+  margin-bottom: 18px;
+}
+.btn {
+  border: none; cursor: pointer; font-family: inherit;
+  height: 68px;
+  padding: 0 32px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  display: inline-flex; align-items: center; gap: 12px;
+  transition: transform var(--t), background var(--t), border-color var(--t);
+}
+.btn svg { width: 20px; height: 20px; }
+.btn-primary {
+  background: var(--azul);
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(66,107,255,0.38), 0 0 0 1px rgba(255,255,255,0.06) inset;
+}
+.btn-primary:hover {
+  background: var(--azul-hi);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 32px rgba(66,107,255,0.5), 0 0 0 1px rgba(255,255,255,0.1) inset;
+}
+.btn-ghost {
+  background: rgba(255,255,255,0.03);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.14);
+  backdrop-filter: blur(8px);
+}
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.28);
+}
+.hero-note {
+  font-size: 13px;
+  color: rgba(246,248,255,0.48);
+}
+
+/* carrossel */
+.hero-dots {
+  position: absolute;
+  bottom: 40px; right: var(--safe-x);
+  display: flex; align-items: center; gap: 12px;
+  z-index: 3;
+  font-size: 13px;
+  font-family: "Orbitron", sans-serif;
+  letter-spacing: 0.12em;
+}
+.hero-dots .bar {
+  width: 42px; height: 2px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 2px;
+  transition: background var(--t);
+}
+.hero-dots .bar.on { background: var(--ciano); }
+.hero-dots .count {
+  margin-left: 10px;
+  color: rgba(246,248,255,0.55);
+  font-weight: 500;
+}
+
+/* ---------- SEÇÃO POPULARES ---------- */
+.section {
+  padding: 12px var(--safe-x) 120px;
+  position: relative;
+  z-index: 3;
+}
+.section-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 22px;
+}
+.section-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(24px, 2vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  color: #fff;
+}
+.section-more {
+  font-size: 14px;
+  color: rgba(246,248,255,0.6);
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer;
+  transition: color var(--t);
+}
+.section-more:hover { color: #fff; }
+
+/* ---------- GRID ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 22px;
+}
+@media (max-width: 1440px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 1100px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 780px)  { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.card {
+  display: flex; flex-direction: column; gap: 12px;
+  cursor: pointer; outline: none;
+}
+.card-thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1a2340, #2a1a50);
+  transition: transform var(--t), outline var(--t), box-shadow var(--t);
+  outline: 0 solid transparent;
+}
+.card-thumb img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.card-fallback {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Orbitron", sans-serif;
+  font-size: 44px; font-weight: 900;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.9);
+}
+.card.focused .card-thumb {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 7px rgba(66,107,255,0.32), 0 14px 36px rgba(0,0,0,0.55);
+  transform: translateY(-3px);
+}
+.card-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.card-cat {
+  font-size: 13px;
+  color: rgba(246,248,255,0.55);
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 40;
+  padding: 14px var(--safe-x) 18px;
+  background: linear-gradient(0deg, rgba(8,12,23,0.96), rgba(8,12,23,0));
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 13px;
+  color: rgba(246,248,255,0.75);
+  pointer-events: none;
+}
+.hints { display: flex; gap: 28px; align-items: center; }
+.hint { display: flex; align-items: center; gap: 8px; }
+.hint .glyph {
+  font-size: 14px; opacity: 0.9;
+  display: inline-flex; align-items: center;
+}
+.hint .label { color: rgba(246,248,255,0.8); }
+.hint strong { font-weight: 700; color: #fff; }
+.foot-right { color: rgba(246,248,255,0.5); }
+
+.status {
+  position: absolute;
+  top: 90px; left: var(--safe-x);
+  font-size: 11px;
+  color: rgba(246,248,255,0.32);
+  letter-spacing: 0.04em;
+  z-index: 5;
+}
 </style>
 </head>
 <body>
 
 <nav>
   <div class="logo">
-    <div class="logo-mark">P</div>
-    <span>PIPOW<span style="color:var(--accent)"> STORE</span></span>
+    <div class="logo-mark">
+      <svg viewBox="0 0 48 48" fill="none">
+        <defs>
+          <linearGradient id="lg" x1="0.1" y1="0" x2="0.9" y2="1">
+            <stop offset="0%" stop-color="#5b8bff"/>
+            <stop offset="50%" stop-color="#3a5fd9"/>
+            <stop offset="100%" stop-color="#55DDFF"/>
+          </linearGradient>
+          <linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5b8bff"/>
+            <stop offset="100%" stop-color="#2a4fa8"/>
+          </linearGradient>
+        </defs>
+        <path d="M6 6 h20 a18 18 0 0 1 0 36 h-20 z M14 14 v20 l14 -10 z" fill="url(#lg)"/>
+        <path d="M6 6 h20 a18 18 0 0 1 0 36 h-20 z M14 14 v20 l14 -10 z" fill="url(#lg2)" opacity="0.35" style="mix-blend-mode:overlay"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span class="top">PIPOW</span>
+      <span class="store">STORE</span>
+    </div>
   </div>
   <div class="nav-links">
     <a href="#" class="active">Inicial</a>
@@ -266,7 +428,7 @@
     <a href="#">Busca</a>
   </div>
   <div class="nav-right">
-    <div class="avatar">JL</div>
+    <div class="avatar">DP</div>
     <span id="clock">--:--</span>
   </div>
 </nav>
@@ -274,119 +436,130 @@
 <div class="status" id="status">carregando catálogo…</div>
 
 <section class="hero">
+  <div class="hero-atmo"></div>
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="hero-stars"></div>
+
   <div class="hero-content">
-    <div class="hero-tag" id="hero-tag">Em destaque · Homebrew</div>
+    <div class="hero-tag" id="hero-tag">EM DESTAQUE</div>
     <h1 class="hero-title" id="hero-title">PIPOW</h1>
-    <div class="hero-sub" id="hero-sub">Catálogo PS5 · 7.00 – 13.60</div>
+    <div class="hero-sub" id="hero-sub">CATÁLOGO PS5</div>
     <p class="hero-desc" id="hero-desc">
-      Instale apps, jogos e utilitários direto no console. Tudo verificado
-      por hash, tudo atualizado automaticamente a partir dos releases oficiais.
+      Apps e utilitários verificados por hash. Atualizados automaticamente.
     </p>
-    <div class="hero-meta" id="hero-meta">
-      <span>PS5</span><span>7.00 – 13.60</span><span>etaHEN</span>
-    </div>
+    <div class="hero-meta" id="hero-meta"></div>
     <div class="hero-actions">
       <button class="btn btn-primary" id="btn-obtain">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
              stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>
+          <path d="M12 3v13M7 11l5 5 5-5M4 21h16"/>
         </svg>
-        Obter app
+        <span id="btn-obtain-label">OBTER APP</span>
       </button>
-      <button class="btn btn-ghost">Ver detalhes</button>
+      <button class="btn btn-ghost" id="btn-details">Ver detalhes</button>
     </div>
-    <div class="hero-note">100% gratuito. O catálogo é seu.</div>
+    <div class="hero-note" id="hero-note">100% gratuito. O catálogo é seu.</div>
   </div>
 
   <div class="hero-dots">
-    <span class="bar"></span>
-    <span class="bar off"></span>
-    <span class="bar off"></span>
-    <span id="hero-count">01 / 02</span>
+    <span class="bar on" id="dot-0"></span>
+    <span class="bar" id="dot-1"></span>
+    <span class="bar" id="dot-2"></span>
+    <span class="count" id="hero-count">01 / 02</span>
   </div>
 </section>
 
 <section class="section">
   <div class="section-head">
     <h2 class="section-title">Populares</h2>
-    <div class="section-more">↓ Mais apps</div>
+    <div class="section-more">↓ Mais coleções</div>
   </div>
   <div class="grid" id="grid"></div>
 </section>
 
 <footer>
   <div class="hints">
-    <div class="hint"><span class="key">←→</span> Navegar</div>
-    <div class="hint"><span class="key">OK</span> Obter app</div>
-    <div class="hint"><span class="key">ESC</span> Voltar</div>
+    <div class="hint"><span class="glyph">✦</span><span class="label">Navegar</span></div>
+    <div class="hint"><span class="label"><strong>OK</strong> Obter</span></div>
+    <div class="hint"><span class="glyph">↩</span><span class="label">Voltar</span></div>
   </div>
   <div class="foot-right">Todos os apps são gratuitos.</div>
 </footer>
 
 <script>
-// ---------- fallback: catálogo embutido (funciona offline / file://) ----------
-const FALLBACK = {
-  "schema": "ps5-store-catalog/v1",
-  "count": 2,
-  "apps": [
-    {
-      "titleid": "PPSA99058",
-      "name": "Overdrive",
-      "kind": "app",
-      "description": "Gerenciador de downloads e instalador homebrew para PS5.",
-      "license": "MIT",
-      "author": "half144",
-      "version": "0.0.109",
-      "source_repo": "https://github.com/half144/overdrive-releases",
-      "artifact_url": "https://github.com/half144/overdrive-releases/releases/download/v0.0.109/Overdrive-PPSA99058.exfat.zip",
-      "sha256": "351020d01ae759abfab13db5931a22e0bc0e8b3bc46daaca88bd8b615b1f1a8b",
-      "icon_url": ""
-    },
-    {
-      "titleid": "PPSA01453",
-      "name": "BlackBox",
-      "kind": "app",
-      "description": "Ferramenta de exploração e diagnóstico para PS5.",
-      "license": "GPL-3.0",
-      "author": "D3ATHLY",
-      "version": "1.0.8",
-      "source_repo": "https://github.com/D3ATHLY/blackbox",
-      "artifact_url": "https://github.com/D3ATHLY/blackbox/releases/download/v1.0.8/PPSA01453.ffpkg",
-      "sha256": "fd153d081533fcfdbbcc28b626cec516c7a162fb4ba9ee078449cfc1d336d547",
-      "icon_url": ""
-    }
-  ]
-};
-
 const CATALOG_URL = "https://raw.githubusercontent.com/davigabriel24242-code/ps5-store/main/store_catalog.json";
 
-// ---------- util ----------
-const $ = (id) => document.getElementById(id);
-const el = (tag, cls, txt) => {
-  const n = document.createElement(tag);
-  if (cls) n.className = cls;
-  if (txt != null) n.textContent = txt;
-  return n;
+// capas curadas — sobe em covers/<TITLEID>.jpg
+const COVER_MAP = {
+  "PPSA99058": "covers/PPSA99058.jpg",
+  "PPSA01453": "covers/PPSA01453.jpg"
 };
-const initials = (name) => name.replace(/[^A-Za-z0-9]/g, "").slice(0, 2).toUpperCase();
+const HERO_IMG = "brand/hero.jpg";
 
-// ---------- estado ----------
+const $ = (id) => document.getElementById(id);
+const initials = (n) => n.replace(/[^A-Za-z0-9]/g, "").slice(0, 2).toUpperCase();
+
 let APPS = [];
+let heroIdx = 0;
 let focusIdx = 0;
 
-// ---------- render ----------
+function applyHeroImage(app) {
+  const bg = $("hero-bg");
+  // 1) tenta hero.jpg global
+  const probe = new Image();
+  probe.onload = () => {
+    bg.style.setProperty("--hero-img", `url("${HERO_IMG}")`);
+    bg.classList.add("on");
+  };
+  probe.onerror = () => {
+    // 2) tenta cover do app destaque
+    const cover = COVER_MAP[app.titleid] || app.icon_url;
+    if (!cover) return;
+    const p2 = new Image();
+    p2.onload = () => {
+      bg.style.setProperty("--hero-img", `url("${cover}")`);
+      bg.classList.add("on");
+    };
+    p2.src = cover;
+  };
+  probe.src = HERO_IMG;
+}
+
 function renderHero(app) {
-  $("hero-tag").textContent = "Em destaque · " + (app.kind === "app" ? "Homebrew" : app.kind);
+  const kindLabel = app.kind === "game" ? "JOGO" : "APP";
+
+  $("hero-tag").textContent = (app.hero_tag || `EM DESTAQUE · ${app.category || "HOMEBREW"}`).toUpperCase();
   $("hero-title").textContent = app.name.toUpperCase();
-  $("hero-sub").textContent = app.description.split(".")[0] || app.name;
-  $("hero-desc").textContent = app.description;
+  $("hero-sub").textContent = (app.category || "HOMEBREW").toUpperCase();
+
+  const desc = app.description || "";
+  $("hero-desc").textContent = desc.length > 170 ? desc.slice(0, 170).trim() + "…" : desc;
+
   $("hero-meta").innerHTML = [
     "v" + app.version,
     "por " + app.author,
-    app.license || "",
+    app.license || ""
   ].filter(Boolean).map(s => `<span>${s}</span>`).join("");
-  $("hero-count").textContent = "01 / " + String(APPS.length).padStart(2, "0");
+
+  $("btn-obtain-label").textContent = "OBTER " + kindLabel;
+
+  const note = app.kind === "game"
+    ? "100% gratuito. A aventura é sua."
+    : "100% gratuito. O catálogo é seu.";
+  $("hero-note").textContent = note;
+
+  $("hero-count").textContent =
+    String(heroIdx + 1).padStart(2, "0") + " / " + String(APPS.length).padStart(2, "0");
+
+  document.querySelectorAll(".hero-dots .bar").forEach((b, i) => {
+    b.classList.toggle("on", i === heroIdx);
+    b.style.display = i < APPS.length ? "" : "none";
+  });
+
   $("btn-obtain").onclick = () => window.open(app.artifact_url, "_blank");
+  $("btn-details").onclick = () => window.open(app.source_repo || "#", "_blank");
+
+  applyHeroImage(app);
 }
 
 function renderGrid() {
@@ -394,36 +567,34 @@ function renderGrid() {
   grid.innerHTML = "";
 
   APPS.forEach((app, i) => {
-    const card = el("div", "card");
-    card.dataset.idx = i;
+    const card = document.createElement("div");
+    card.className = "card";
     card.tabIndex = 0;
 
-    const thumb = el("div", "card-thumb");
+    const thumb = document.createElement("div");
+    thumb.className = "card-thumb";
 
-    // tenta imagem, cai pra placeholder de iniciais
-    if (app.icon_url) {
-      const img = el("img");
-      img.src = app.icon_url;
+    const cover = COVER_MAP[app.titleid] || app.icon_url;
+    if (cover) {
+      const img = document.createElement("img");
+      img.src = cover;
       img.alt = app.name;
-      img.onerror = () => {
-        img.remove();
-        thumb.appendChild(el("div", "card-fallback", initials(app.name)));
-      };
+      img.onerror = () => { img.remove(); thumb.appendChild(mkFallback(app.name)); };
       thumb.appendChild(img);
     } else {
-      thumb.appendChild(el("div", "card-fallback", initials(app.name)));
+      thumb.appendChild(mkFallback(app.name));
     }
 
-    // badge de canal (por enquanto: latest vs estável)
-    const badge = el("span", "card-badge new", "NOVO");
-    thumb.appendChild(badge);
-
     card.appendChild(thumb);
-    card.appendChild(el("div", "card-name", app.name));
 
-    const cat = el("div", "card-cat");
-    cat.appendChild(el("span", null, app.author));
-    cat.appendChild(el("span", "ver", "v" + app.version));
+    const name = document.createElement("div");
+    name.className = "card-name";
+    name.textContent = app.name;
+    card.appendChild(name);
+
+    const cat = document.createElement("div");
+    cat.className = "card-cat";
+    cat.textContent = app.category || "Homebrew";
     card.appendChild(cat);
 
     card.onmouseenter = () => { focusIdx = i; applyFocus(); };
@@ -434,49 +605,59 @@ function renderGrid() {
   applyFocus();
 }
 
+function mkFallback(name) {
+  const d = document.createElement("div");
+  d.className = "card-fallback";
+  d.textContent = initials(name);
+  return d;
+}
+
 function applyFocus() {
   document.querySelectorAll(".card").forEach((c, i) => {
     c.classList.toggle("focused", i === focusIdx);
   });
 }
 
-// ---------- teclado ----------
 document.addEventListener("keydown", (e) => {
-  const cols = 5;
   const total = APPS.length;
   if (!total) return;
+  const cols = 5;
 
-  if (e.key === "ArrowRight") { focusIdx = Math.min(total - 1, focusIdx + 1); applyFocus(); }
-  if (e.key === "ArrowLeft")  { focusIdx = Math.max(0, focusIdx - 1); applyFocus(); }
-  if (e.key === "ArrowDown")  { focusIdx = Math.min(total - 1, focusIdx + cols); applyFocus(); }
-  if (e.key === "ArrowUp")    { focusIdx = Math.max(0, focusIdx - cols); applyFocus(); }
+  if (e.key === "ArrowRight") { focusIdx = Math.min(total - 1, focusIdx + 1); applyFocus(); e.preventDefault(); }
+  if (e.key === "ArrowLeft")  { focusIdx = Math.max(0, focusIdx - 1); applyFocus(); e.preventDefault(); }
+  if (e.key === "ArrowDown")  { focusIdx = Math.min(total - 1, focusIdx + cols); applyFocus(); e.preventDefault(); }
+  if (e.key === "ArrowUp")    { focusIdx = Math.max(0, focusIdx - cols); applyFocus(); e.preventDefault(); }
   if (e.key === "Enter") {
     const app = APPS[focusIdx];
     if (app) window.open(app.artifact_url, "_blank");
   }
+  if (e.key === "Tab") {
+    e.preventDefault();
+    if (APPS.length > 1) {
+      heroIdx = (heroIdx + 1) % APPS.length;
+      renderHero(APPS[heroIdx]);
+    }
+  }
 });
 
-// ---------- relógio ----------
 function tickClock() {
   const d = new Date();
   $("clock").textContent = String(d.getHours()).padStart(2, "0") + ":" +
                            String(d.getMinutes()).padStart(2, "0");
 }
 
-// ---------- bootstrap ----------
 async function boot() {
-  let data = FALLBACK;
+  let data = { apps: [] };
   try {
     const res = await fetch(CATALOG_URL + "?t=" + Date.now(), { cache: "no-store" });
     if (res.ok) {
       data = await res.json();
-      $("status").textContent = "catálogo remoto · " + data.count + " apps · atualizado " +
-                                new Date(data.updated).toLocaleString("pt-BR");
+      $("status").textContent = "catálogo remoto · " + data.count + " apps";
     } else {
-      $("status").textContent = "usando fallback local (remoto retornou " + res.status + ")";
+      $("status").textContent = "erro " + res.status;
     }
   } catch (e) {
-    $("status").textContent = "usando fallback local (sem rede)";
+    $("status").textContent = "sem rede";
   }
 
   APPS = data.apps || [];
