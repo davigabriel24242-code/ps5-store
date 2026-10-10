@@ -1,0 +1,16 @@
+{
+  "PPSA99058": {
+    "display_name": "Overdrive",
+    "category": "Utilitário",
+    "description": "Gerenciador de downloads e instalador homebrew para PS5. Baixa, extrai e monta pacotes direto do console, com fila persistente e verificação de hash.",
+    "hero_tag": "Em destaque · Utilitário",
+    "meta_line": "Sistema · etaHEN · Livre"
+  },
+  "PPSA01453": {
+    "display_name": "BlackBox",
+    "category": "Utilitário",
+    "description": "Suíte de ferramentas e exploração para PS5. Inspeção de sistema, gerenciamento de arquivos e diagnóstico do console.",
+    "hero_tag": "Em destaque · Diagnóstico",
+    "meta_line": "Sistema · etaHEN · Livre"
+  }
+}

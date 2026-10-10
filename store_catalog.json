@@ -1,33 +1,39 @@
 {
   "schema": "ps5-store-catalog/v1",
-  "updated": "2026-10-10T19:14:06.785614+00:00",
+  "updated": "2026-10-10T19:29:01.471445+00:00",
   "count": 2,
   "apps": [
     {
       "titleid": "PPSA99058",
       "name": "Overdrive",
       "kind": "app",
-      "description": "Fixes the app closing at every launch when its saved download queue was left empty, which a reinstall could not fix. A damaged queue or settings file is now kept aside and the app opens.",
+      "category": "Utilitário",
+      "description": "Gerenciador de downloads e instalador homebrew para PS5. Baixa, extrai e monta pacotes direto do console, com fila persistente e verificação de hash.",
+      "hero_tag": "Em destaque · Utilitário",
+      "meta_line": "Sistema · etaHEN · Livre",
       "license": "MIT",
       "author": "half144",
       "version": "0.0.109",
       "source_repo": "https://github.com/half144/overdrive-releases",
       "artifact_url": "https://github.com/half144/overdrive-releases/releases/download/v0.0.109/Overdrive-PPSA99058.exfat.zip",
       "sha256": "351020d01ae759abfab13db5931a22e0bc0e8b3bc46daaca88bd8b615b1f1a8b",
-      "icon_url": "https://raw.githubusercontent.com/half144/overdrive-releases/v0.0.109/sce_sys/icon0.png"
+      "icon_url": "https://raw.githubusercontent.com/davigabriel24242-code/ps5-store/main/icons/PPSA99058.png"
     },
     {
       "titleid": "PPSA01453",
       "name": "BlackBox",
       "kind": "app",
-      "description": "BlackBox 1.0.8",
+      "category": "Utilitário",
+      "description": "Suíte de ferramentas e exploração para PS5. Inspeção de sistema, gerenciamento de arquivos e diagnóstico do console.",
+      "hero_tag": "Em destaque · Diagnóstico",
+      "meta_line": "Sistema · etaHEN · Livre",
       "license": "GPL-3.0",
       "author": "D3ATHLY",
       "version": "1.0.8",
       "source_repo": "https://github.com/D3ATHLY/blackbox",
       "artifact_url": "https://github.com/D3ATHLY/blackbox/releases/download/v1.0.8/PPSA01453.ffpkg",
       "sha256": "fd153d081533fcfdbbcc28b626cec516c7a162fb4ba9ee078449cfc1d336d547",
-      "icon_url": "https://raw.githubusercontent.com/D3ATHLY/blackbox/v1.0.8/sce_sys/icon0.png"
+      "icon_url": "https://raw.githubusercontent.com/davigabriel24242-code/ps5-store/main/icons/PPSA01453.png"
     }
   ]
 }

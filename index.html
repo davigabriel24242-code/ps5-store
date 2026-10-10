@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Pipow Store</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #0a0d14;
+    --bg-2: #0f1420;
+    --fg: #eaeef7;
+    --muted: #8a94a8;
+    --accent: #4a7fff;
+    --accent-2: #6b95ff;
+    --focus: #7ba7ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, "Segoe UI", "Inter", Roboto, sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ---------- nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; gap: 40px;
+    padding: 20px 48px;
+    background: linear-gradient(180deg, rgba(10,13,20,0.9), rgba(10,13,20,0.4));
+    backdrop-filter: blur(12px);
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 800; letter-spacing: 0.08em; font-size: 18px;
+  }
+  .logo-mark {
+    width: 26px; height: 26px; border-radius: 6px;
+    background: linear-gradient(135deg, var(--accent), #2a4fa8);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 900; color: #fff;
+  }
+  .nav-links {
+    display: flex; gap: 32px; flex: 1;
+    font-size: 14px; font-weight: 500;
+  }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; position: relative;
+    padding-bottom: 6px; transition: color 0.15s;
+  }
+  .nav-links a.active { color: var(--fg); }
+  .nav-links a.active::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+    height: 2px; background: var(--accent);
+  }
+  .nav-right {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 14px; color: var(--muted);
+  }
+  .avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, #4a7fff, #7b3fff);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: #fff;
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    padding: 60px 48px 40px;
+    min-height: 520px;
+    display: flex; flex-direction: column; justify-content: center;
+    background:
+      radial-gradient(circle at 75% 40%, rgba(74,127,255,0.18), transparent 55%),
+      radial-gradient(circle at 20% 80%, rgba(120,60,255,0.10), transparent 50%),
+      linear-gradient(180deg, transparent, var(--bg));
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1px 1px at 85% 45%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.25), transparent),
+      radial-gradient(1px 1px at 75% 80%, rgba(255,255,255,0.3), transparent);
+    opacity: 0.6; pointer-events: none;
+  }
+  .hero-content { position: relative; max-width: 640px; z-index: 2; }
+  .hero-tag {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.22em;
+    color: var(--accent-2); text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero-title {
+    font-size: clamp(48px, 7vw, 84px);
+    font-weight: 900; letter-spacing: 0.06em;
+    line-height: 0.95; text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .hero-sub {
+    font-size: clamp(18px, 2vw, 24px);
+    font-weight: 500; letter-spacing: 0.03em;
+    color: #d5dbe8; margin-bottom: 22px;
+  }
+  .hero-desc {
+    font-size: 15px; line-height: 1.6; color: var(--muted);
+    max-width: 520px; margin-bottom: 26px;
+  }
+  .hero-meta {
+    display: flex; gap: 22px; font-size: 12.5px;
+    color: var(--muted); margin-bottom: 30px;
+  }
+  .hero-meta span::before { content: "· "; margin-right: 4px; color: #3a4254; }
+  .hero-meta span:first-child::before { content: none; }
+  .hero-actions { display: flex; gap: 14px; margin-bottom: 20px; }
+  .btn {
+    border: none; cursor: pointer;
+    padding: 14px 26px; border-radius: 6px;
+    font-size: 14px; font-weight: 600; letter-spacing: 0.04em;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: transform 0.12s, background 0.15s;
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    box-shadow: 0 6px 24px rgba(74,127,255,0.35);
+  }
+  .btn-primary:hover { background: var(--accent-2); transform: translateY(-1px); }
+  .btn-ghost {
+    background: rgba(255,255,255,0.06); color: var(--fg);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.12); }
+  .btn svg { width: 16px; height: 16px; }
+  .hero-note { font-size: 12px; color: var(--muted); }
+
+  /* indicador de slides */
+  .hero-dots {
+    position: absolute; bottom: 40px; right: 48px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 12px; color: var(--muted); z-index: 2;
+  }
+  .hero-dots .bar { width: 32px; height: 2px; background: var(--accent); border-radius: 2px; }
+  .hero-dots .bar.off { background: rgba(255,255,255,0.15); }
+
+  /* ---------- grid ---------- */
+  .section {
+    padding: 20px 48px 60px;
+  }
+  .section-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 22px;
+  }
+  .section-title {
+    font-size: 26px; font-weight: 800; letter-spacing: 0.01em;
+  }
+  .section-more {
+    font-size: 13px; color: var(--muted); cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .section-more:hover { color: var(--fg); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 1280px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 960px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 680px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .card {
+    display: flex; flex-direction: column; gap: 12px;
+    cursor: pointer; outline: none;
+  }
+  .card-thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px; overflow: hidden;
+    background: linear-gradient(135deg, #1a2340, #2a1a50);
+    transition: transform 0.18s, box-shadow 0.18s, outline 0.12s;
+  }
+  .card-thumb img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .card-fallback {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 42px; font-weight: 900; letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.85);
+    text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+  }
+  .card-badge {
+    position: absolute; top: 10px; right: 10px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 4px 8px; border-radius: 4px;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
+    color: #fff;
+  }
+  .card-badge.installed { background: rgba(34,160,90,0.9); }
+  .card-badge.update    { background: rgba(220,160,30,0.95); color: #000; }
+  .card-badge.new       { background: var(--accent); }
+
+  .card:hover .card-thumb,
+  .card.focused .card-thumb {
+    transform: scale(1.03);
+    box-shadow: 0 12px 40px rgba(74,127,255,0.25);
+  }
+  .card.focused .card-thumb {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+  .card-name {
+    font-size: 15px; font-weight: 700;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .card-cat {
+    font-size: 12px; color: var(--muted);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-cat .ver { color: #566076; }
+
+  /* ---------- footer / hints ---------- */
+  footer {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    padding: 12px 48px;
+    background: linear-gradient(0deg, rgba(10,13,20,0.95), rgba(10,13,20,0));
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 12px; color: var(--muted);
+    pointer-events: none;
+  }
+  .hints { display: flex; gap: 24px; }
+  .hint { display: flex; align-items: center; gap: 8px; }
+  .hint .key {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 22px; height: 22px; padding: 0 6px;
+    border-radius: 4px; background: rgba(255,255,255,0.08);
+    font-size: 11px; font-weight: 700; color: var(--fg);
+  }
+  .foot-right { color: var(--muted); }
+
+  /* status */
+  .status {
+    padding: 8px 48px; font-size: 12px; color: var(--muted);
+    min-height: 20px;
+  }
+  .status.err { color: #ff7a7a; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <div class="logo-mark">P</div>
+    <span>PIPOW<span style="color:var(--accent)"> STORE</span></span>
+  </div>
+  <div class="nav-links">
+    <a href="#" class="active">Inicial</a>
+    <a href="#">Explore</a>
+    <a href="#">Biblioteca</a>
+    <a href="#">Favoritos</a>
+    <a href="#">Busca</a>
+  </div>
+  <div class="nav-right">
+    <div class="avatar">JL</div>
+    <span id="clock">--:--</span>
+  </div>
+</nav>
+
+<div class="status" id="status">carregando catálogo…</div>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-tag" id="hero-tag">Em destaque · Homebrew</div>
+    <h1 class="hero-title" id="hero-title">PIPOW</h1>
+    <div class="hero-sub" id="hero-sub">Catálogo PS5 · 7.00 – 13.60</div>
+    <p class="hero-desc" id="hero-desc">
+      Instale apps, jogos e utilitários direto no console. Tudo verificado
+      por hash, tudo atualizado automaticamente a partir dos releases oficiais.
+    </p>
+    <div class="hero-meta" id="hero-meta">
+      <span>PS5</span><span>7.00 – 13.60</span><span>etaHEN</span>
+    </div>
+    <div class="hero-actions">
+      <button class="btn btn-primary" id="btn-obtain">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>
+        </svg>
+        Obter app
+      </button>
+      <button class="btn btn-ghost">Ver detalhes</button>
+    </div>
+    <div class="hero-note">100% gratuito. O catálogo é seu.</div>
+  </div>
+
+  <div class="hero-dots">
+    <span class="bar"></span>
+    <span class="bar off"></span>
+    <span class="bar off"></span>
+    <span id="hero-count">01 / 02</span>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2 class="section-title">Populares</h2>
+    <div class="section-more">↓ Mais apps</div>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<footer>
+  <div class="hints">
+    <div class="hint"><span class="key">←→</span> Navegar</div>
+    <div class="hint"><span class="key">OK</span> Obter app</div>
+    <div class="hint"><span class="key">ESC</span> Voltar</div>
+  </div>
+  <div class="foot-right">Todos os apps são gratuitos.</div>
+</footer>
+
+<script>
+// ---------- fallback: catálogo embutido (funciona offline / file://) ----------
+const FALLBACK = {
+  "schema": "ps5-store-catalog/v1",
+  "count": 2,
+  "apps": [
+    {
+      "titleid": "PPSA99058",
+      "name": "Overdrive",
+      "kind": "app",
+      "description": "Gerenciador de downloads e instalador homebrew para PS5.",
+      "license": "MIT",
+      "author": "half144",
+      "version": "0.0.109",
+      "source_repo": "https://github.com/half144/overdrive-releases",
+      "artifact_url": "https://github.com/half144/overdrive-releases/releases/download/v0.0.109/Overdrive-PPSA99058.exfat.zip",
+      "sha256": "351020d01ae759abfab13db5931a22e0bc0e8b3bc46daaca88bd8b615b1f1a8b",
+      "icon_url": ""
+    },
+    {
+      "titleid": "PPSA01453",
+      "name": "BlackBox",
+      "kind": "app",
+      "description": "Ferramenta de exploração e diagnóstico para PS5.",
+      "license": "GPL-3.0",
+      "author": "D3ATHLY",
+      "version": "1.0.8",
+      "source_repo": "https://github.com/D3ATHLY/blackbox",
+      "artifact_url": "https://github.com/D3ATHLY/blackbox/releases/download/v1.0.8/PPSA01453.ffpkg",
+      "sha256": "fd153d081533fcfdbbcc28b626cec516c7a162fb4ba9ee078449cfc1d336d547",
+      "icon_url": ""
+    }
+  ]
+};
+
+const CATALOG_URL = "https://raw.githubusercontent.com/davigabriel24242-code/ps5-store/main/store_catalog.json";
+
+// ---------- util ----------
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, txt) => {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (txt != null) n.textContent = txt;
+  return n;
+};
+const initials = (name) => name.replace(/[^A-Za-z0-9]/g, "").slice(0, 2).toUpperCase();
+
+// ---------- estado ----------
+let APPS = [];
+let focusIdx = 0;
+
+// ---------- render ----------
+function renderHero(app) {
+  $("hero-tag").textContent = "Em destaque · " + (app.kind === "app" ? "Homebrew" : app.kind);
+  $("hero-title").textContent = app.name.toUpperCase();
+  $("hero-sub").textContent = app.description.split(".")[0] || app.name;
+  $("hero-desc").textContent = app.description;
+  $("hero-meta").innerHTML = [
+    "v" + app.version,
+    "por " + app.author,
+    app.license || "",
+  ].filter(Boolean).map(s => `<span>${s}</span>`).join("");
+  $("hero-count").textContent = "01 / " + String(APPS.length).padStart(2, "0");
+  $("btn-obtain").onclick = () => window.open(app.artifact_url, "_blank");
+}
+
+function renderGrid() {
+  const grid = $("grid");
+  grid.innerHTML = "";
+
+  APPS.forEach((app, i) => {
+    const card = el("div", "card");
+    card.dataset.idx = i;
+    card.tabIndex = 0;
+
+    const thumb = el("div", "card-thumb");
+
+    // tenta imagem, cai pra placeholder de iniciais
+    if (app.icon_url) {
+      const img = el("img");
+      img.src = app.icon_url;
+      img.alt = app.name;
+      img.onerror = () => {
+        img.remove();
+        thumb.appendChild(el("div", "card-fallback", initials(app.name)));
+      };
+      thumb.appendChild(img);
+    } else {
+      thumb.appendChild(el("div", "card-fallback", initials(app.name)));
+    }
+
+    // badge de canal (por enquanto: latest vs estável)
+    const badge = el("span", "card-badge new", "NOVO");
+    thumb.appendChild(badge);
+
+    card.appendChild(thumb);
+    card.appendChild(el("div", "card-name", app.name));
+
+    const cat = el("div", "card-cat");
+    cat.appendChild(el("span", null, app.author));
+    cat.appendChild(el("span", "ver", "v" + app.version));
+    card.appendChild(cat);
+
+    card.onmouseenter = () => { focusIdx = i; applyFocus(); };
+    card.onclick = () => window.open(app.artifact_url, "_blank");
+    grid.appendChild(card);
+  });
+
+  applyFocus();
+}
+
+function applyFocus() {
+  document.querySelectorAll(".card").forEach((c, i) => {
+    c.classList.toggle("focused", i === focusIdx);
+  });
+}
+
+// ---------- teclado ----------
+document.addEventListener("keydown", (e) => {
+  const cols = 5;
+  const total = APPS.length;
+  if (!total) return;
+
+  if (e.key === "ArrowRight") { focusIdx = Math.min(total - 1, focusIdx + 1); applyFocus(); }
+  if (e.key === "ArrowLeft")  { focusIdx = Math.max(0, focusIdx - 1); applyFocus(); }
+  if (e.key === "ArrowDown")  { focusIdx = Math.min(total - 1, focusIdx + cols); applyFocus(); }
+  if (e.key === "ArrowUp")    { focusIdx = Math.max(0, focusIdx - cols); applyFocus(); }
+  if (e.key === "Enter") {
+    const app = APPS[focusIdx];
+    if (app) window.open(app.artifact_url, "_blank");
+  }
+});
+
+// ---------- relógio ----------
+function tickClock() {
+  const d = new Date();
+  $("clock").textContent = String(d.getHours()).padStart(2, "0") + ":" +
+                           String(d.getMinutes()).padStart(2, "0");
+}
+
+// ---------- bootstrap ----------
+async function boot() {
+  let data = FALLBACK;
+  try {
+    const res = await fetch(CATALOG_URL + "?t=" + Date.now(), { cache: "no-store" });
+    if (res.ok) {
+      data = await res.json();
+      $("status").textContent = "catálogo remoto · " + data.count + " apps · atualizado " +
+                                new Date(data.updated).toLocaleString("pt-BR");
+    } else {
+      $("status").textContent = "usando fallback local (remoto retornou " + res.status + ")";
+    }
+  } catch (e) {
+    $("status").textContent = "usando fallback local (sem rede)";
+  }
+
+  APPS = data.apps || [];
+  if (APPS.length) renderHero(APPS[0]);
+  renderGrid();
+  tickClock();
+  setInterval(tickClock, 30000);
+}
+
+boot();
+</script>
+</body>
+</html>
