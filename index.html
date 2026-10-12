@@ -489,13 +489,6 @@ footer {
 <script>
 const CATALOG_URL = "https://raw.githubusercontent.com/davigabriel24242-code/ps5-store/main/store_catalog.json";
 
-// capas curadas — sobe em covers/<TITLEID>.jpg
-const COVER_MAP = {
-  "PPSA99058": "covers/PPSA99058.jpg",
-  "PPSA01453": "covers/PPSA01453.jpg"
-};
-const HERO_IMG = "brand/hero.jpg";
-
 const $ = (id) => document.getElementById(id);
 const initials = (n) => n.replace(/[^A-Za-z0-9]/g, "").slice(0, 2).toUpperCase();
 
@@ -503,26 +496,54 @@ let APPS = [];
 let heroIdx = 0;
 let focusIdx = 0;
 
+function coverFor(app) {
+  // 1) cover local em covers/<TITLEID>.jpg
+  if (app.titleid) return "covers/" + app.titleid + ".jpg";
+  // 2) capa declarada no catálogo
+  if (app.cover_url) return app.cover_url;
+  // 3) ícone (modo demo usa assets/card-N.jpg)
+  if (app.icon_url) return app.icon_url;
+  return null;
+}
+
+function coverFor(app) {
+  // 1) cover local em covers/<TITLEID>.jpg
+  if (app.titleid) return "covers/" + app.titleid + ".jpg";
+  // 2) capa declarada no catálogo
+  if (app.cover_url) return app.cover_url;
+  // 3) ícone (modo demo usa assets/card-N.jpg)
+  if (app.icon_url) return app.icon_url;
+  return null;
+}
+
 function applyHeroImage(app) {
   const bg = $("hero-bg");
-  // 1) tenta hero.jpg global
+  const cover = coverFor(app);
+  if (!cover) {
+    bg.classList.remove("on");
+    bg.style.removeProperty("--hero-img");
+    return;
+  }
   const probe = new Image();
   probe.onload = () => {
-    bg.style.setProperty("--hero-img", `url("${HERO_IMG}")`);
+    bg.style.setProperty("--hero-img", 'url("' + cover + '")');
     bg.classList.add("on");
   };
   probe.onerror = () => {
-    // 2) tenta cover do app destaque
-    const cover = COVER_MAP[app.titleid] || app.icon_url;
-    if (!cover) return;
+    // se covers/<ID>.jpg não existe, tenta hero.png global
+    const fallback = "assets/hero.png";
     const p2 = new Image();
     p2.onload = () => {
-      bg.style.setProperty("--hero-img", `url("${cover}")`);
+      bg.style.setProperty("--hero-img", 'url("' + fallback + '")');
       bg.classList.add("on");
     };
-    p2.src = cover;
+    p2.onerror = () => {
+      bg.classList.remove("on");
+      bg.style.removeProperty("--hero-img");
+    };
+    p2.src = fallback;
   };
-  probe.src = HERO_IMG;
+  probe.src = cover;
 }
 
 function renderHero(app) {
@@ -574,7 +595,7 @@ function renderGrid() {
     const thumb = document.createElement("div");
     thumb.className = "card-thumb";
 
-    const cover = COVER_MAP[app.titleid] || app.icon_url;
+        const cover = coverFor(app);
     if (cover) {
       const img = document.createElement("img");
       img.src = cover;
@@ -660,8 +681,10 @@ async function boot() {
     $("status").textContent = "sem rede";
   }
 
-  APPS = data.apps || [];
-  if (APPS.length) renderHero(APPS[0]);
+      APPS = data.apps || [];
+    const featIdx = APPS.findIndex(a => a.featured);
+  heroIdx = featIdx >= 0 ? featIdx : 0;
+  if (APPS.length) renderHero(APPS[heroIdx]);
   renderGrid();
   tickClock();
   setInterval(tickClock, 30000);
