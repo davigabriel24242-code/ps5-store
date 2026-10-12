@@ -1,0 +1,100 @@
+name: build-ps5
+
+on:
+  workflow_dispatch:
+    inputs:
+      titleid:
+        description: 'Title ID'
+        required: false
+        default: 'PPSA99054'
+      appname:
+        description: 'Nome do app'
+        required: false
+        default: 'pipow-store'
+
+jobs:
+  build:
+    runs-on: macos-14
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout ps5-store
+        uses: actions/checkout@v4
+        with:
+          path: ps5-store
+
+      - name: Checkout ps5-react
+        uses: actions/checkout@v4
+        with:
+          repository: davigabriel24242-code/ps5-react
+          path: ps5-react
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install brew deps
+        run: |
+          brew install cmake sdl2 llvm@18 curl libarchive openssl@3 pkg-config
+
+      - name: Install npm deps
+        working-directory: ps5-react
+        run: npm ci
+
+      - name: Doctor
+        working-directory: ps5-react
+        run: npm run doctor
+        continue-on-error: true
+
+      - name: Create app scaffold
+        working-directory: ps5-react
+        run: |
+          npm run create -- --name ${{ inputs.appname }} --title-id ${{ inputs.titleid }}
+
+      - name: Copy JSX source
+        run: |
+          APP_DIR="ps5-react/apps/${{ inputs.appname }}"
+          echo "APP_DIR=$APP_DIR" >> $GITHUB_ENV
+          echo "APP_DIR real: $APP_DIR"
+          ls -la "$APP_DIR"
+          if [ -d "$APP_DIR/src" ]; then
+            cp ps5-store/apps/pipow-store/index.jsx    "$APP_DIR/src/index.jsx"
+            cp ps5-store/apps/pipow-store/catalog.js   "$APP_DIR/src/catalog.js"
+            cp ps5-store/apps/pipow-store/platform.jsx "$APP_DIR/src/platform.jsx"
+          else
+            cp ps5-store/apps/pipow-store/index.jsx    "$APP_DIR/index.jsx"
+            cp ps5-store/apps/pipow-store/catalog.js   "$APP_DIR/catalog.js"
+            cp ps5-store/apps/pipow-store/platform.jsx "$APP_DIR/platform.jsx"
+          fi
+
+      - name: Copy assets
+        run: |
+          mkdir -p "$APP_DIR/assets" "$APP_DIR/covers"
+          cp ps5-store/assets/logo.png "$APP_DIR/assets/" || true
+          cp ps5-store/assets/hero.png "$APP_DIR/assets/" || true
+          cp ps5-store/covers/*.jpg    "$APP_DIR/covers/" || true
+
+      - name: Build
+        working-directory: ps5-react
+        run: npm run build -- --app ${{ inputs.appname }}
+
+      - name: List dist
+        run: |
+          echo "=== dist tree ==="
+          find ps5-react/dist -type f 2>/dev/null | head -50 || echo "sem dist"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipow-store-build
+          path: |
+            ps5-react/dist/**/*.zip
+            ps5-react/dist/**/*
+          if-no-files-found: warn
+          retention-days: 30

@@ -1,0 +1,91 @@
+export default {
+  "schema": "ps5-store-catalog/v1",
+  "updated": "2026-10-12T21:42:36.172201+00:00",
+  "count": 3,
+  "apps": [
+    {
+      "titleid": "PPSA17019",
+      "name": "The 7th Guest VR",
+      "kind": "game",
+      "category": "Aventura",
+      "description": "Remake em VR do clássico de 1993. Você explora a mansão Stauf em primeira pessoa, resolve enigmas e descobre o que aconteceu ali.",
+      "hero_tag": "Em destaque · Aventura VR",
+      "meta_line": "1 jogador · Inglês · 16 anos",
+      "license": null,
+      "author": "Vertigo Games",
+      "version": "01.006",
+      "source_repo": null,
+      "artifact_url": "https://akirabox.to/QN9mEq51xm6d/file",
+      "downloads": [
+        {
+          "host": "akirabox",
+          "label": "AkiraBox",
+          "url": "https://akirabox.to/QN9mEq51xm6d/file",
+          "size_gb": 38.4,
+          "password": null
+        }
+      ],
+      "sha256": null,
+      "icon_url": null,
+      "featured": true,
+      "region": null,
+      "size_gb": null
+    },
+    {
+      "titleid": "CUSA57220",
+      "name": "EA Sports FC 27",
+      "kind": "game",
+      "category": "Esporte",
+      "description": "Futebol anual da EA com modo carreira, Ultimate Team e partidas online. Elencos e ligas atualizados.",
+      "hero_tag": "Em destaque · Esporte",
+      "meta_line": "1-4 jogadores · PT-BR · Livre",
+      "license": null,
+      "author": "EA Vancouver",
+      "version": "01.000",
+      "source_repo": null,
+      "artifact_url": "https://1fichier.com/?8lsewns7ilzuwv3yrwkp&af=2899507",
+      "downloads": [
+        {
+          "host": "1fichier",
+          "label": "1fichier",
+          "url": "https://1fichier.com/?8lsewns7ilzuwv3yrwkp&af=2899507",
+          "size_gb": 55,
+          "password": null
+        }
+      ],
+      "sha256": null,
+      "icon_url": null,
+      "featured": false,
+      "region": null,
+      "size_gb": null
+    },
+    {
+      "titleid": "CUSA03041",
+      "name": "Red Dead Redemption 2",
+      "kind": "game",
+      "category": "Ação-Aventura",
+      "description": "Saga de Arthur Morgan e da gangue Van der Linde no crepúsculo do Velho Oeste. Mundo aberto, narrativa longa, caça, tiro e sobrevivência.",
+      "hero_tag": "Em destaque · Velho Oeste",
+      "meta_line": "1 jogador · PT-BR · 18 anos",
+      "license": null,
+      "author": "Rockstar Games",
+      "version": "01.000",
+      "source_repo": null,
+      "artifact_url": "https://akirabox.to/l76mZVwpZman/file",
+      "downloads": [
+        {
+          "host": "akirabox",
+          "label": "AkiraBox",
+          "url": "https://akirabox.to/l76mZVwpZman/file",
+          "size_gb": 105,
+          "password": null
+        }
+      ],
+      "sha256": null,
+      "icon_url": null,
+      "featured": false,
+      "region": null,
+      "size_gb": null
+    }
+  ]
+};
