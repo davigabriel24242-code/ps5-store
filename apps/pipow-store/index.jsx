@@ -6,7 +6,7 @@ const tabs=['Inicial','Explore','Biblioteca','Favoritos','Busca'];
 const id=a=>a.titleid||a.name;
 const normalize=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 function Label({children,muted=false}){return <Text className={muted?'text-slate-400':'text-white'}>{children}</Text>}
-function Control({label,active,focused}){return <View focused={focused} selected={active} className="rounded-xl bg-slate-800 px-6 py-4 focused:bg-sky-800"><Label>{label}</Label></View>}
+function Control({label,active,focused}){const cls="rounded-xl bg-slate-800 px-6 py-4"+(focused?" bg-sky-800":"");return <View focused={focused} selected={active} className={cls}><Label>{label}</Label></View>}
 export function PipowStore(){
  const [screen,setScreen]=useState('Inicial'),[selected,setSelected]=useState(null),[focus,setFocus]=useState(0),[hero,setHero]=useState(0),[favorites,setFavorites]=useState([]),[query,setQuery]=useState(''),[genre,setGenre]=useState('Todos'),[notice,setNotice]=useState('');
  const apps=catalog.apps||[];const featured=apps[hero]||apps[0];const genres=['Todos',...new Set(apps.map(a=>a.category).filter(Boolean))];
@@ -28,7 +28,7 @@ export function PipowStore(){
  {screen==='Biblioteca'&&<View><Text className="text-4xl text-white">Seu próximo capítulo.</Text><Label muted>Instalação e downloads não integrados ao host nativo.</Label></View>}
  {screen==='Favoritos'&&<View><Text className="text-4xl text-white">Mundos que você quer visitar.</Text><Label muted>Favoritos desta sessão. Salvamento permanente não integrado.</Label></View>}
  {screen==='Busca'&&<View><Text className="text-4xl text-white">Qual será o próximo destino?</Text><Label>{query||'Buscar no catálogo'}</Label><Label muted>Teclado: navegue com D-pad e confirme com Cross.</Label><Control label={controls[focus]?.label||''} focused={true}/></View>}
- <View className="flex-row">{list.slice(Math.max(0,list.findIndex(a=>a.name===controls[focus]?.label)-2),Math.max(0,list.findIndex(a=>a.name===controls[focus]?.label)-2)+5).map(a=><View key={id(a)} focused={focus===chooseFocus(a.name)} className="rounded-xl bg-slate-800 p-4 focused:bg-sky-800"><NativeArtwork kind="card" titleid={a.titleid}/><Label>{a.name}</Label><Label muted>{a.category}</Label></View>)}</View></View>}
+ <View className="flex-row">{list.slice(Math.max(0,list.findIndex(a=>a.name===controls[focus]?.label)-2),Math.max(0,list.findIndex(a=>a.name===controls[focus]?.label)-2)+5).map(a=>{const isFocused=focus===chooseFocus(a.name);const cls="rounded-xl bg-slate-800 p-4"+(isFocused?" bg-sky-800":"");return <View key={id(a)} focused={isFocused} className={cls}><NativeArtwork kind="card" titleid={a.titleid}/><Label>{a.name}</Label><Label muted>{a.category}</Label></View>})}</View>
  {notice&&<View className="rounded-xl bg-slate-800 p-4"><Label>{notice}</Label></View>}<Label muted>D-pad: navegar · Cross: selecionar · Circle: voltar</Label></View>;
 }
 AppRegistry.registerComponent('pipow-store',()=>PipowStore);
