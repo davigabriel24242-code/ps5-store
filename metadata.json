@@ -1,23 +1,23 @@
 {
-  "PPSA99058": {
-    "display_name": "Overdrive",
-    "category": "Utilitário",
-    "description": "Gerenciador de downloads e instalador homebrew para PS5. Baixa, extrai e monta pacotes direto do console, com fila persistente e verificação de hash.",
-    "hero_tag": "Em destaque · Utilitário",
-    "meta_line": "Sistema · etaHEN · Livre"
-  },
-  "PPSA01453": {
-    "display_name": "BlackBox",
-    "category": "Utilitário",
-    "description": "Suíte de ferramentas e exploração para PS5. Inspeção de sistema, gerenciamento de arquivos e diagnóstico do console.",
-    "hero_tag": "Em destaque · Diagnóstico",
-    "meta_line": "Sistema · etaHEN · Livre"
-  },
   "PPSA17019": {
     "display_name": "The 7th Guest VR",
     "category": "Aventura",
     "description": "Remake em VR do clássico de 1993. Você explora a mansão Stauf em primeira pessoa, resolve enigmas e descobre o que aconteceu ali.",
     "hero_tag": "Em destaque · Aventura VR",
     "meta_line": "1 jogador · Inglês · 16 anos"
+  },
+  "CUSA03041": {
+    "display_name": "Red Dead Redemption 2",
+    "category": "Ação-Aventura",
+    "description": "Saga de Arthur Morgan e da gangue Van der Linde no crepúsculo do Velho Oeste. Mundo aberto, narrativa longa, caça, tiro e sobrevivência.",
+    "hero_tag": "Em destaque · Velho Oeste",
+    "meta_line": "1 jogador · PT-BR · 18 anos"
+  },
+  "CUSA57220": {
+    "display_name": "EA Sports FC 27",
+    "category": "Esporte",
+    "description": "Futebol anual da EA com modo carreira, Ultimate Team e partidas online. Elencos e ligas atualizados.",
+    "hero_tag": "Em destaque · Esporte",
+    "meta_line": "1-4 jogadores · PT-BR · Livre"
   }
 }

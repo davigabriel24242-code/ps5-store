@@ -1,18 +1,6 @@
 {
   "sources": [
     {
-      "repo": "half144/overdrive-releases",
-      "titleid": "PPSA99058",
-      "kind": "app",
-      "license": "MIT"
-    },
-    {
-      "repo": "D3ATHLY/blackbox",
-      "titleid": "PPSA01453",
-      "kind": "app",
-      "license": "GPL-3.0"
-    },
-    {
       "manual": true,
       "titleid": "PPSA17019",
       "kind": "game",
@@ -25,9 +13,47 @@
       "downloads": [
         {
           "host": "akirabox",
-          "label": "AkiraBox · pt.1",
+          "label": "AkiraBox",
           "url": "https://akirabox.to/QN9mEq51xm6d/file",
           "size_gb": 38.4,
+          "password": null
+        }
+      ]
+    },
+    {
+      "manual": true,
+      "titleid": "CUSA03041",
+      "kind": "game",
+      "name": "Red Dead Redemption 2",
+      "author": "Rockstar Games",
+      "version": "01.000",
+      "license": null,
+      "category": "Ação-Aventura",
+      "downloads": [
+        {
+          "host": "akirabox",
+          "label": "AkiraBox",
+          "url": "https://akirabox.to/l76mZVwpZman/file",
+          "size_gb": 105.0,
+          "password": null
+        }
+      ]
+    },
+    {
+      "manual": true,
+      "titleid": "CUSA57220",
+      "kind": "game",
+      "name": "EA Sports FC 27",
+      "author": "EA Vancouver",
+      "version": "01.000",
+      "license": null,
+      "category": "Esporte",
+      "downloads": [
+        {
+          "host": "1fichier",
+          "label": "1fichier",
+          "url": "https://1fichier.com/?8lsewns7ilzuwv3yrwkp&af=2899507",
+          "size_gb": 55.0,
           "password": null
         }
       ]

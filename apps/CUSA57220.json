@@ -1,0 +1,28 @@
+{
+  "titleid": "CUSA57220",
+  "name": "EA Sports FC 27",
+  "kind": "game",
+  "category": "Esporte",
+  "description": "Futebol anual da EA com modo carreira, Ultimate Team e partidas online. Elencos e ligas atualizados.",
+  "hero_tag": "Em destaque · Esporte",
+  "meta_line": "1-4 jogadores · PT-BR · Livre",
+  "license": null,
+  "author": "EA Vancouver",
+  "version": "01.000",
+  "source_repo": null,
+  "artifact_url": "https://1fichier.com/?8lsewns7ilzuwv3yrwkp&af=2899507",
+  "downloads": [
+    {
+      "host": "1fichier",
+      "label": "1fichier",
+      "url": "https://1fichier.com/?8lsewns7ilzuwv3yrwkp&af=2899507",
+      "size_gb": 55.0,
+      "password": null
+    }
+  ],
+  "sha256": null,
+  "icon_url": null,
+  "featured": false,
+  "region": null,
+  "size_gb": null
+}

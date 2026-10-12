@@ -1,6 +1,6 @@
 {
   "schema": "ps5-store-index/v1",
-  "updated": "2026-10-10T20:22:34.405425+00:00",
+  "updated": "2026-10-12T21:42:36.172201+00:00",
   "count": 3,
   "apps": [
     {
@@ -11,18 +11,18 @@
       "icon_url": null
     },
     {
-      "titleid": "PPSA01453",
-      "name": "BlackBox",
-      "version": "1.0.8",
-      "author": "D3ATHLY",
-      "icon_url": "https://raw.githubusercontent.com/davigabriel24242-code/ps5-store/main/icons/PPSA01453.png"
+      "titleid": "CUSA57220",
+      "name": "EA Sports FC 27",
+      "version": "01.000",
+      "author": "EA Vancouver",
+      "icon_url": null
     },
     {
-      "titleid": "PPSA99058",
-      "name": "Overdrive",
-      "version": "0.0.109",
-      "author": "half144",
-      "icon_url": "https://raw.githubusercontent.com/davigabriel24242-code/ps5-store/main/icons/PPSA99058.png"
+      "titleid": "CUSA03041",
+      "name": "Red Dead Redemption 2",
+      "version": "01.000",
+      "author": "Rockstar Games",
+      "icon_url": null
     }
   ]
 }
