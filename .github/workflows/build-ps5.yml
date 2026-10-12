@@ -90,9 +90,21 @@ jobs:
           cp ps5-store/assets/hero.png "$APP_DIR/assets/" || true
           cp ps5-store/covers/*.jpg    "$APP_DIR/covers/" || true
 
+      - name: Debug ar e PATH
+        run: |
+          echo "which ar: $(which ar)"
+          echo "ar --version:"
+          ar --version | head -3
+          echo "PATH=$PATH"
+
       - name: Build
         working-directory: ps5-react
-        run: npm run build -- --app ${{ inputs.appname }}
+        env:
+          PATH: /opt/homebrew/opt/binutils/bin:/opt/homebrew/opt/llvm@18/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin
+        run: |
+          which ar
+          ar --version | head -1
+          npm run build -- --app ${{ inputs.appname }}
 
       - name: List dist
         run: |
