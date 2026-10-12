@@ -41,7 +41,7 @@ jobs:
 
       - name: Install brew deps
         run: |
-          brew install cmake sdl2 llvm@18 curl libarchive openssl@3 pkg-config binutils
+          brew install cmake sdl2 llvm@18 curl libarchive openssl@3 pkg-config binutils dpkg
 
       - name: Prefer GNU ar (macOS BSD ar truncates large .deb members)
         run: |
