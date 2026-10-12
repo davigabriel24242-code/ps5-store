@@ -103,12 +103,15 @@ export function PipowStore() {
           {screen === 'Favoritos' && <View><Text className="text-4xl text-white">Mundos que você quer visitar.</Text><Label muted>Favoritos desta sessão. Salvamento permanente não integrado.</Label></View>}
           {screen === 'Busca' && <View><Text className="text-4xl text-white">Qual será o próximo destino?</Text><Label>{query || 'Buscar no catálogo'}</Label><Label muted>Teclado: navegue com D-pad e confirme com Cross.</Label><Control label={controls[focus]?.label || ''} focused={true} /></View>}
           <View className="flex-row">
-            {list.slice(start, start + 5).map(a => (
-              <View key={id(a)} focused={focus === chooseFocus(a.name)} className="rounded-xl bg-slate-800 p-4 focused:bg-sky-800">
+            {list.slice(start, start + 5).map(a => {
+              const isFocused = focus === chooseFocus(a.name);
+              return (
+              <View key={id(a)} focused={isFocused} className="rounded-xl bg-slate-800 p-4 focused:bg-sky-800">
                 <NativeArtwork kind="card" titleid={a.titleid} />
                 <Label>{a.name}</Label><Label muted>{a.category}</Label>
               </View>
-            ))}
+              );
+            })}
           </View>
         </View>
       )}
