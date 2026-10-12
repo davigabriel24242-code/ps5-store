@@ -1,6 +1,6 @@
 {
   "schema": "ps5-store-index/v1",
-  "updated": "2026-10-11T11:51:39.104564+00:00",
+  "updated": "2026-10-12T13:58:25.900979+00:00",
   "count": 3,
   "apps": [
     {
@@ -20,7 +20,7 @@
     {
       "titleid": "PPSA99058",
       "name": "Overdrive",
-      "version": "0.1.4",
+      "version": "0.2.1",
       "author": "half144",
       "icon_url": "https://raw.githubusercontent.com/davigabriel24242-code/ps5-store/main/icons/PPSA99058.png"
     }

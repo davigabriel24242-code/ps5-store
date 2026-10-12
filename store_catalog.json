@@ -1,6 +1,6 @@
 {
   "schema": "ps5-store-catalog/v1",
-  "updated": "2026-10-11T11:51:39.104564+00:00",
+  "updated": "2026-10-12T13:58:25.900979+00:00",
   "count": 3,
   "apps": [
     {
@@ -58,10 +58,10 @@
       "meta_line": "Sistema · etaHEN · Livre",
       "license": "MIT",
       "author": "half144",
-      "version": "0.1.4",
+      "version": "0.2.1",
       "source_repo": "https://github.com/half144/overdrive-releases",
-      "artifact_url": "https://github.com/half144/overdrive-releases/releases/download/v0.1.4/Overdrive-PPSA99058.exfat.zip",
-      "sha256": "ae56542062e0219f12b8e4ed68a9de235066d1cdabbe234142decf6d54c0972b",
+      "artifact_url": "https://github.com/half144/overdrive-releases/releases/download/v0.2.1/Overdrive-PPSA99058.exfat.zip",
+      "sha256": "4cac7c4fc1e708fee5678ca0ae32fdd601ab43e8ce139386d58f872b1c3dc0ff",
       "icon_url": "https://raw.githubusercontent.com/davigabriel24242-code/ps5-store/main/icons/PPSA99058.png",
       "featured": false
     }
