@@ -45,12 +45,9 @@ jobs:
 
       - name: Prefer GNU ar (macOS BSD ar truncates large .deb members)
         run: |
-          # binutils do brew vem como 'gar' e 'ar' sem symlink.
-          # cria symlink 'ar -> gar' e coloca essa pasta à frente do PATH.
-          ls /opt/homebrew/opt/binutils/bin/
-          ln -sf /opt/homebrew/opt/binutils/bin/gar /opt/homebrew/opt/binutils/bin/ar
-          echo "/opt/homebrew/opt/binutils/bin" >> $GITHUB_PATH
+          ls -la /opt/homebrew/opt/binutils/bin/ | grep -E " (ar|gar)"
           /opt/homebrew/opt/binutils/bin/ar --version
+          echo "/opt/homebrew/opt/binutils/bin" >> $GITHUB_PATH
 
       - name: Install npm deps
         working-directory: ps5-react
