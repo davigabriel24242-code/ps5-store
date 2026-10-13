@@ -1,7 +1,7 @@
 import {useState} from 'react';
-import {AppRegistry, View, Text, useController, FocusScope} from '@ps5-react/core';
+import {AppRegistry, View, Text, FocusScope} from '@ps5-react/core';
 import catalog from './catalog.js';
-import {Logo, Cover, HeroArt} from './platform.jsx';
+import {Logo, CardCover, HomeHero, DetailHero} from './platform.jsx';
 
 const tabs = ['Inicial', 'Explore', 'Biblioteca', 'Favoritos', 'Busca'];
 const id = a => a.titleid || a.name;
@@ -54,7 +54,7 @@ function GhostButton({label, onPress}) {
 function Card({app, onPress}) {
   return <View focusable onPress={onPress}
     className="w-[280px] rounded-xl bg-pipow-surface border-2 border-transparent focused:border-pipow-cyan">
-    <Cover titleid={app.titleid} className="w-[280px] h-[158px] rounded-t-xl" />
+    <CardCover titleid={app.titleid} />
     <View className="p-4 gap-1">
       <Text className="font-sans text-lg text-pipow-text">{app.name}</Text>
       <Muted>{app.category || 'Jogo'}</Muted>
@@ -104,35 +104,30 @@ export function PipowStore() {
         </View>
 
         {detail ? (
-          <View className="flex-row gap-8 flex-1">
-            <HeroArt titleid={detail.titleid} className="w-[720px] h-full rounded-2xl" />
-            <View className="flex-1 gap-4 p-6">
+          <View className="flex-row gap-8">
+            <DetailHero titleid={detail.titleid} />
+            <View className="gap-4 p-6 w-[520px]">
               <Tag>{(detail.hero_tag || 'EM DESTAQUE').toUpperCase()}</Tag>
               <DisplayLg>{detail.name}</DisplayLg>
               <Muted>{detail.category + ' · ' + detail.author + ' · v' + detail.version}</Muted>
-              <View className="h-2" />
               <Label>{detail.description}</Label>
-              <View className="h-4" />
               <View className="flex-row gap-3">
                 <PrimaryButton label={detail.kind === 'game' ? 'OBTER JOGO' : 'OBTER APP'} onPress={() => obtain(detail)} />
                 <GhostButton label={favorites.includes(id(detail)) ? '♥ Favoritado' : '♡ Favoritar'} onPress={() => toggleFav(detail)} />
               </View>
-              <View className="h-2" />
               <Muted>{detail.meta_line || ''}</Muted>
               <Tiny>D-pad: navegar · X: selecionar · Circle: voltar</Tiny>
             </View>
           </View>
         ) : screen === 'Inicial' && featured ? (
-          <View className="gap-6 flex-1">
-            <View className="flex-row gap-8 h-[420px]">
-              <HeroArt titleid={featured.titleid} className="w-[820px] h-full rounded-2xl" />
-              <View className="flex-1 gap-3 p-4">
+          <View className="gap-6">
+            <View className="flex-row gap-8">
+              <HomeHero titleid={featured.titleid} />
+              <View className="gap-3 p-4 w-[440px]">
                 <Tag>{(featured.hero_tag || 'EM DESTAQUE').toUpperCase()}</Tag>
                 <DisplayLg>{featured.name}</DisplayLg>
                 <Muted>{featured.category}</Muted>
-                <View className="h-2" />
                 <Label>{featured.description}</Label>
-                <View className="h-4" />
                 <View className="flex-row gap-3">
                   <PrimaryButton label="OBTER" onPress={() => obtain(featured)} />
                   <GhostButton label="Ver detalhes" onPress={() => setSelected(featured)} />
@@ -146,7 +141,7 @@ export function PipowStore() {
             </View>
           </View>
         ) : (
-          <View className="gap-6 flex-1">
+          <View className="gap-6">
             {screen === 'Explore' && (
               <View className="gap-4">
                 <Text className="font-display text-4xl text-pipow-text">Explore</Text>

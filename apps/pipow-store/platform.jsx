@@ -15,19 +15,22 @@ export function Logo() {
   return <Image source={logo} resizeMode="contain" className="w-[220px] h-[70px]" />;
 }
 
-export function Cover({titleid, className}) {
+export function CardCover({titleid}) {
   const src = COVERS[titleid];
   if (!src) {
-    return <View className={(className || '') + ' bg-pipow-surface2 items-center justify-center'}>
-      <Text className="font-display text-2xl text-pipow-muted">
-        {String(titleid || '').slice(0, 4)}
-      </Text>
+    return <View className="w-[280px] h-[158px] rounded-t-xl bg-pipow-surface2 items-center justify-center">
+      <Text className="font-display text-2xl text-pipow-muted">{String(titleid || '----').slice(0, 4)}</Text>
     </View>;
   }
-  return <Image source={src} resizeMode="cover" className={className} />;
+  return <Image source={src} resizeMode="cover" className="w-[280px] h-[158px] rounded-t-xl" />;
 }
 
-export function HeroArt({titleid, className}) {
+export function HomeHero({titleid}) {
   const src = COVERS[titleid] || hero;
-  return <Image source={src} resizeMode="cover" className={className} />;
+  return <Image source={src} resizeMode="cover" className="w-[820px] h-[420px] rounded-2xl" />;
+}
+
+export function DetailHero({titleid}) {
+  const src = COVERS[titleid] || hero;
+  return <Image source={src} resizeMode="cover" className="w-[720px] h-[480px] rounded-2xl" />;
 }
