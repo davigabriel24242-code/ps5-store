@@ -15,7 +15,10 @@ on:
 jobs:
   build:
     runs-on: macos-14
-    timeout-minutes: 45
+    timeout-minutes: 60
+    env:
+      APP_NAME: ${{ inputs.appname }}
+      APP_DIR: ps5-react/apps/${{ inputs.appname }}
 
     steps:
       - name: Checkout ps5-store
@@ -40,14 +43,25 @@ jobs:
           python-version: '3.12'
 
       - name: Install brew deps
-        run: |
-          brew install cmake sdl2 llvm@18 curl libarchive openssl@3 pkg-config binutils dpkg
+        run: brew install cmake sdl2 llvm@18 curl libarchive openssl@3 pkg-config binutils dpkg
 
       - name: Prefer GNU ar (macOS BSD ar truncates large .deb members)
         run: |
-          ls -la /opt/homebrew/opt/binutils/bin/ | grep -E " (ar|gar)"
-          /opt/homebrew/opt/binutils/bin/ar --version
-          echo "/opt/homebrew/opt/binutils/bin" >> $GITHUB_PATH
+          /opt/homebrew/opt/binutils/bin/ar --version | head -1
+          echo "/opt/homebrew/opt/binutils/bin" >> "$GITHUB_PATH"
+
+      - name: Install Python deps (Pillow)
+        run: |
+          python -m pip install --upgrade pip Pillow
+          python -c "from PIL import Image; print('Pillow setup-python OK')"
+          /opt/homebrew/bin/python3 -m pip install --break-system-packages Pillow
+          /opt/homebrew/bin/python3 -c "from PIL import Image; print('Pillow homebrew OK')"
+
+      - name: Cache deps externas
+        uses: actions/cache@v4
+        with:
+          path: ps5-react/.deps
+          key: deps-macos14-${{ hashFiles('ps5-react/tools/**', 'ps5-react/package-lock.json') }}
 
       - name: Install npm deps
         working-directory: ps5-react
@@ -61,62 +75,47 @@ jobs:
       - name: Create app scaffold
         working-directory: ps5-react
         run: |
-          if [ -d "apps/${{ inputs.appname }}" ]; then
-            echo "app ${{ inputs.appname }} ja existe — pulando create"
+          if [ -d "apps/$APP_NAME" ]; then
+            echo "app $APP_NAME ja existe, pulando create"
           else
-            npm run create -- --name ${{ inputs.appname }} --title-id ${{ inputs.titleid }}
+            npm run create -- --name "$APP_NAME" --title-id "${{ inputs.titleid }}"
           fi
 
       - name: Copy JSX source
         run: |
-          APP_DIR="ps5-react/apps/${{ inputs.appname }}"
-          echo "APP_DIR=$APP_DIR" >> $GITHUB_ENV
-          echo "APP_DIR real: $APP_DIR"
-          ls -la "$APP_DIR"
-          if [ -d "$APP_DIR/src" ]; then
-            cp ps5-store/apps/pipow-store/index.jsx    "$APP_DIR/src/index.jsx"
-            cp ps5-store/apps/pipow-store/catalog.js   "$APP_DIR/src/catalog.js"
-            cp ps5-store/apps/pipow-store/platform.jsx "$APP_DIR/src/platform.jsx"
-          else
-            cp ps5-store/apps/pipow-store/index.jsx    "$APP_DIR/index.jsx"
-            cp ps5-store/apps/pipow-store/catalog.js   "$APP_DIR/catalog.js"
-            cp ps5-store/apps/pipow-store/platform.jsx "$APP_DIR/platform.jsx"
-          fi
+          DEST="$APP_DIR"
+          [ -d "$APP_DIR/src" ] && DEST="$APP_DIR/src"
+          for f in index.jsx catalog.js platform.jsx; do
+            cp "ps5-store/apps/pipow-store/$f" "$DEST/$f"
+          done
 
       - name: Copy assets
         run: |
           mkdir -p "$APP_DIR/assets" "$APP_DIR/covers"
-          cp ps5-store/assets/logo.png "$APP_DIR/assets/" || true
-          cp ps5-store/assets/hero.png "$APP_DIR/assets/" || true
-          cp ps5-store/covers/*.jpg    "$APP_DIR/covers/" || true
-
-      - name: Debug ar e PATH
-        run: |
-          echo "which ar: $(which ar)"
-          echo "ar --version:"
-          ar --version | head -3
-          echo "PATH=$PATH"
+          for f in logo.png hero.png; do
+            cp "ps5-store/assets/$f" "$APP_DIR/assets/" || echo "::warning::asset $f nao encontrado"
+          done
+          cp ps5-store/covers/*.jpg "$APP_DIR/covers/" 2>/dev/null || echo "::warning::nenhuma capa .jpg encontrada"
 
       - name: Build
-        working-directory: ps5-react
-        env:
-          PATH: /opt/homebrew/opt/binutils/bin:/opt/homebrew/opt/llvm@18/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin
+        shell: bash
         run: |
-          which ar
-          ar --version | head -1
-          npm run build -- --app ${{ inputs.appname }}
+          export PATH="/opt/homebrew/opt/binutils/bin:/opt/homebrew/opt/llvm@18/bin:$PATH"
+          echo "ar: $(which ar)"
+          echo "python3: $(which python3)"
+          python3 -m pip install --quiet Pillow || python3 -m pip install --quiet --break-system-packages Pillow
+          python3 -c "from PIL import Image; print('Pillow OK')"
+          cd ps5-react
+          npm run build -- --app "$APP_NAME"
 
       - name: List dist
-        run: |
-          echo "=== dist tree ==="
-          find ps5-react/dist -type f 2>/dev/null | head -50 || echo "sem dist"
+        if: always()
+        run: find ps5-react/dist -type f 2>/dev/null | head -50 || echo "sem dist"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: pipow-store-build
-          path: |
-            ps5-react/dist/**/*.zip
-            ps5-react/dist/**/*
+          name: ${{ inputs.appname }}-build
+          path: ps5-react/dist/
           if-no-files-found: warn
           retention-days: 30
