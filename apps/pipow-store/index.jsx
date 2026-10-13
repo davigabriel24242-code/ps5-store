@@ -7,24 +7,31 @@ const tabs = ['Inicial', 'Explore', 'Biblioteca', 'Favoritos', 'Busca'];
 const id = a => a.titleid || a.name;
 const normalize = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
-function Label({children, kind = 'body'}) {
-  const cls = {
-    body: 'font-sans text-base text-pipow-text',
-    muted: 'font-sans text-sm text-pipow-muted',
-    tiny: 'font-sans text-xs text-pipow-muted2',
-    display: 'font-display text-4xl text-pipow-text',
-    displayLg: 'font-display text-6xl text-pipow-text',
-    tag: 'font-display text-sm text-pipow-cyan',
-  }[kind] || 'font-sans text-base text-pipow-text';
-  return <Text className={cls}>{children}</Text>;
+function Label({children}) {
+  return <Text className="font-sans text-base text-pipow-text">{children}</Text>;
+}
+function Muted({children}) {
+  return <Text className="font-sans text-sm text-pipow-muted">{children}</Text>;
+}
+function Tiny({children}) {
+  return <Text className="font-sans text-xs text-pipow-muted2">{children}</Text>;
+}
+function Display({children}) {
+  return <Text className="font-display text-4xl text-pipow-text">{children}</Text>;
+}
+function DisplayLg({children}) {
+  return <Text className="font-display text-7xl text-pipow-text">{children}</Text>;
+}
+function Tag({children}) {
+  return <Text className="font-display text-sm text-pipow-cyan">{children}</Text>;
 }
 
 function Nav({screen, onSelect}) {
   return <View className="flex-row gap-6 items-center">
     {tabs.map(t => (
       <View key={t} focusable onPress={() => onSelect(t)}
-        className={'px-4 py-2 rounded-lg ' + (screen === t ? 'bg-pipow-blue' : 'bg-pipow-surface') + ' focused:bg-pipow-blueHi'}>
-        <Text className="font-sans text-base text-pipow-text">{t}</Text>
+        className={`px-4 py-2 rounded-lg focused:bg-pipow-blueHi ${screen === t ? 'bg-pipow-blue' : 'bg-pipow-surface'}`}>
+        <Label>{t}</Label>
       </View>
     ))}
   </View>;
@@ -33,7 +40,7 @@ function Nav({screen, onSelect}) {
 function PrimaryButton({label, onPress}) {
   return <View focusable onPress={onPress}
     className="px-8 py-4 rounded-xl bg-pipow-blue focused:bg-pipow-blueHi">
-    <Text className="font-sans text-lg text-pipow-text">↓ {label}</Text>
+    <Text className="font-sans text-lg text-pipow-text">{label}</Text>
   </View>;
 }
 
@@ -50,7 +57,7 @@ function Card({app, onPress}) {
     <Cover titleid={app.titleid} className="w-[280px] h-[158px] rounded-t-xl" />
     <View className="p-4 gap-1">
       <Text className="font-sans text-lg text-pipow-text">{app.name}</Text>
-      <Text className="font-sans text-sm text-pipow-muted">{app.category || 'Jogo'}</Text>
+      <Muted>{app.category || 'Jogo'}</Muted>
     </View>
   </View>;
 }
@@ -100,9 +107,9 @@ export function PipowStore() {
           <View className="flex-row gap-8 flex-1">
             <HeroArt titleid={detail.titleid} className="w-[720px] h-full rounded-2xl" />
             <View className="flex-1 gap-4 p-6">
-              <Label kind="tag">{(detail.hero_tag || 'EM DESTAQUE').toUpperCase()}</Label>
-              <Label kind="displayLg">{detail.name}</Label>
-              <Label kind="muted">{detail.category} · {detail.author} · v{detail.version}</Label>
+              <Tag>{(detail.hero_tag || 'EM DESTAQUE').toUpperCase()}</Tag>
+              <DisplayLg>{detail.name}</DisplayLg>
+              <Muted>{detail.category + ' · ' + detail.author + ' · v' + detail.version}</Muted>
               <View className="h-2" />
               <Label>{detail.description}</Label>
               <View className="h-4" />
@@ -111,8 +118,8 @@ export function PipowStore() {
                 <GhostButton label={favorites.includes(id(detail)) ? '♥ Favoritado' : '♡ Favoritar'} onPress={() => toggleFav(detail)} />
               </View>
               <View className="h-2" />
-              <Label kind="muted">{detail.meta_line || ''}</Label>
-              <Label kind="tiny">D-pad: navegar · X: selecionar · Circle: voltar</Label>
+              <Muted>{detail.meta_line || ''}</Muted>
+              <Tiny>D-pad: navegar · X: selecionar · Circle: voltar</Tiny>
             </View>
           </View>
         ) : screen === 'Inicial' && featured ? (
@@ -120,16 +127,16 @@ export function PipowStore() {
             <View className="flex-row gap-8 h-[420px]">
               <HeroArt titleid={featured.titleid} className="w-[820px] h-full rounded-2xl" />
               <View className="flex-1 gap-3 p-4">
-                <Label kind="tag">{(featured.hero_tag || 'EM DESTAQUE').toUpperCase()}</Label>
-                <Label kind="displayLg">{featured.name}</Label>
-                <Label kind="muted">{featured.category}</Label>
+                <Tag>{(featured.hero_tag || 'EM DESTAQUE').toUpperCase()}</Tag>
+                <DisplayLg>{featured.name}</DisplayLg>
+                <Muted>{featured.category}</Muted>
                 <View className="h-2" />
                 <Label>{featured.description}</Label>
                 <View className="h-4" />
                 <View className="flex-row gap-3">
                   <PrimaryButton label="OBTER" onPress={() => obtain(featured)} />
                   <GhostButton label="Ver detalhes" onPress={() => setSelected(featured)} />
-                  <GhostButton label="Próximo" onPress={() => setHero(v => (v + 1) % apps.length)} />
+                  <GhostButton label="Proximo" onPress={() => setHero(v => (v + 1) % apps.length)} />
                 </View>
               </View>
             </View>
@@ -146,8 +153,8 @@ export function PipowStore() {
                 <View className="flex-row gap-3 flex-wrap">
                   {genres.map(g => (
                     <View key={g} focusable onPress={() => setGenre(g)}
-                      className={'px-5 py-3 rounded-full ' + (genre === g ? 'bg-pipow-blue' : 'bg-pipow-surface') + ' focused:bg-pipow-blueHi'}>
-                      <Text className="font-sans text-base text-pipow-text">{g}</Text>
+                      className={`px-5 py-3 rounded-full focused:bg-pipow-blueHi ${genre === g ? 'bg-pipow-blue' : 'bg-pipow-surface'}`}>
+                      <Label>{g}</Label>
                     </View>
                   ))}
                 </View>
