@@ -109,17 +109,40 @@ function Chip({label, active, onPress}) {
   );
 }
 
-const TILE_WIDTH = {sm: 'w-[204px]', md: 'w-[224px]', lg: 'w-[276px]'};
+// O plugin Tailwind so aceita classes fixas, entao cada tamanho tem seu proprio className literal
+function TileInfo({app, sub}) {
+  return (
+    <View className="px-1 pb-2 gap-1">
+      <Text className="font-sans text-base text-pipow-text">{app.name}</Text>
+      <Muted>{sub || app.category || 'Jogo'}</Muted>
+    </View>
+  );
+}
 
 function Tile({app, size = 'md', sub, onPress}) {
+  if (size === 'sm') {
+    return (
+      <View focusable onPress={onPress}
+        className="w-[204px] gap-2 rounded-xl border-2 border-transparent focused:border-pipow-text">
+        <Cover titleid={app.titleid} size="sm" />
+        <TileInfo app={app} sub={sub} />
+      </View>
+    );
+  }
+  if (size === 'lg') {
+    return (
+      <View focusable onPress={onPress}
+        className="w-[276px] gap-2 rounded-xl border-2 border-transparent focused:border-pipow-text">
+        <Cover titleid={app.titleid} size="lg" />
+        <TileInfo app={app} sub={sub} />
+      </View>
+    );
+  }
   return (
     <View focusable onPress={onPress}
-      className={`${TILE_WIDTH[size]} gap-2 rounded-xl border-2 border-transparent focused:border-pipow-text`}>
-      <Cover titleid={app.titleid} size={size} />
-      <View className="px-1 pb-2 gap-1">
-        <Text className="font-sans text-base text-pipow-text">{app.name}</Text>
-        <Muted>{sub || app.category || 'Jogo'}</Muted>
-      </View>
+      className="w-[224px] gap-2 rounded-xl border-2 border-transparent focused:border-pipow-text">
+      <Cover titleid={app.titleid} size="md" />
+      <TileInfo app={app} sub={sub} />
     </View>
   );
 }

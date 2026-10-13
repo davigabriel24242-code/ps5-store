@@ -11,37 +11,47 @@ const COVERS = {
   CUSA57220: coverCUSA57220,
 };
 
-// Classes literais (o compilador de estilos nao entende classes montadas dinamicamente)
-const COVER_SIZE = {
-  sm: 'w-[200px] h-[112px] rounded-lg',
-  md: 'w-[220px] h-[124px] rounded-lg',
-  lg: 'w-[272px] h-[153px] rounded-lg',
-};
-
-const ART_SIZE = {
-  home: 'w-[568px] h-[320px] rounded-2xl',
-  detail: 'w-[600px] h-[520px] rounded-2xl',
-  banner: 'w-[480px] h-[148px] rounded-xl',
-};
+// O plugin Tailwind so aceita classes fixas no build.
+// Por isso cada tamanho tem seu proprio className literal (sem objetos nem variaveis).
 
 export function Logo() {
   return <Image source={logo} resizeMode="contain" className="w-[150px] h-[40px]" />;
 }
 
-export function Cover({titleid, size = 'md'}) {
-  const src = COVERS[titleid];
-  const cls = COVER_SIZE[size] || COVER_SIZE.md;
-  if (!src) {
+function CoverFallback({titleid, size}) {
+  const label = String(titleid || '----').slice(0, 4);
+  if (size === 'sm') {
     return (
-      <View className={`${cls} bg-pipow-surface2 items-center justify-center`}>
-        <Text className="font-display text-2xl text-pipow-muted">{String(titleid || '----').slice(0, 4)}</Text>
+      <View className="w-[200px] h-[112px] rounded-lg bg-pipow-surface2 items-center justify-center">
+        <Text className="font-display text-2xl text-pipow-muted">{label}</Text>
       </View>
     );
   }
-  return <Image source={src} resizeMode="cover" className={cls} />;
+  if (size === 'lg') {
+    return (
+      <View className="w-[272px] h-[153px] rounded-lg bg-pipow-surface2 items-center justify-center">
+        <Text className="font-display text-2xl text-pipow-muted">{label}</Text>
+      </View>
+    );
+  }
+  return (
+    <View className="w-[220px] h-[124px] rounded-lg bg-pipow-surface2 items-center justify-center">
+      <Text className="font-display text-2xl text-pipow-muted">{label}</Text>
+    </View>
+  );
+}
+
+export function Cover({titleid, size = 'md'}) {
+  const src = COVERS[titleid];
+  if (!src) return <CoverFallback titleid={titleid} size={size} />;
+  if (size === 'sm') return <Image source={src} resizeMode="cover" className="w-[200px] h-[112px] rounded-lg" />;
+  if (size === 'lg') return <Image source={src} resizeMode="cover" className="w-[272px] h-[153px] rounded-lg" />;
+  return <Image source={src} resizeMode="cover" className="w-[220px] h-[124px] rounded-lg" />;
 }
 
 export function Art({titleid, size = 'home'}) {
   const src = COVERS[titleid] || hero;
-  return <Image source={src} resizeMode="cover" className={ART_SIZE[size] || ART_SIZE.home} />;
+  if (size === 'detail') return <Image source={src} resizeMode="cover" className="w-[600px] h-[520px] rounded-2xl" />;
+  if (size === 'banner') return <Image source={src} resizeMode="cover" className="w-[480px] h-[148px] rounded-xl" />;
+  return <Image source={src} resizeMode="cover" className="w-[568px] h-[320px] rounded-2xl" />;
 }
