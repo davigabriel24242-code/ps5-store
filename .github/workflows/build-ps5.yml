@@ -101,10 +101,10 @@ jobs:
       - name: Copy assets
         run: |
           mkdir -p "$APP_DIR/assets" "$APP_DIR/covers"
-          for f in logo.png hero.png; do
-            cp "ps5-store/apps/pipow-store/assets/$f" "$APP_DIR/assets/" || echo "::warning::asset $f nao encontrado"
-          done
-          cp ps5-store/apps/pipow-store/covers/*.jpg "$APP_DIR/covers/" 2>/dev/null || echo "::warning::nenhuma capa .jpg encontrada"
+          cp ps5-store/apps/pipow-store/assets/*.png "$APP_DIR/assets/" 2>/dev/null || echo "::warning::nenhum asset .png"
+          cp ps5-store/apps/pipow-store/covers/*.png "$APP_DIR/covers/" 2>/dev/null || echo "::warning::nenhuma capa .png"
+          echo "=== assets no app ==="
+          ls -la "$APP_DIR/assets" "$APP_DIR/covers"
 
       - name: Verificar layout do app
         run: |
