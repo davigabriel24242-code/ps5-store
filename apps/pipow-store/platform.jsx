@@ -11,26 +11,37 @@ const COVERS = {
   CUSA57220: coverCUSA57220,
 };
 
+// Classes literais (o compilador de estilos nao entende classes montadas dinamicamente)
+const COVER_SIZE = {
+  sm: 'w-[200px] h-[112px] rounded-lg',
+  md: 'w-[220px] h-[124px] rounded-lg',
+  lg: 'w-[272px] h-[153px] rounded-lg',
+};
+
+const ART_SIZE = {
+  home: 'w-[568px] h-[320px] rounded-2xl',
+  detail: 'w-[600px] h-[520px] rounded-2xl',
+  banner: 'w-[480px] h-[148px] rounded-xl',
+};
+
 export function Logo() {
-  return <Image source={logo} resizeMode="contain" className="w-[220px] h-[70px]" />;
+  return <Image source={logo} resizeMode="contain" className="w-[150px] h-[40px]" />;
 }
 
-export function CardCover({titleid}) {
+export function Cover({titleid, size = 'md'}) {
   const src = COVERS[titleid];
+  const cls = COVER_SIZE[size] || COVER_SIZE.md;
   if (!src) {
-    return <View className="w-[280px] h-[158px] rounded-t-xl bg-pipow-surface2 items-center justify-center">
-      <Text className="font-display text-2xl text-pipow-muted">{String(titleid || '----').slice(0, 4)}</Text>
-    </View>;
+    return (
+      <View className={`${cls} bg-pipow-surface2 items-center justify-center`}>
+        <Text className="font-display text-2xl text-pipow-muted">{String(titleid || '----').slice(0, 4)}</Text>
+      </View>
+    );
   }
-  return <Image source={src} resizeMode="cover" className="w-[280px] h-[158px] rounded-t-xl" />;
+  return <Image source={src} resizeMode="cover" className={cls} />;
 }
 
-export function HomeHero({titleid}) {
+export function Art({titleid, size = 'home'}) {
   const src = COVERS[titleid] || hero;
-  return <Image source={src} resizeMode="cover" className="w-[820px] h-[420px] rounded-2xl" />;
-}
-
-export function DetailHero({titleid}) {
-  const src = COVERS[titleid] || hero;
-  return <Image source={src} resizeMode="cover" className="w-[720px] h-[480px] rounded-2xl" />;
+  return <Image source={src} resizeMode="cover" className={ART_SIZE[size] || ART_SIZE.home} />;
 }
