@@ -75,6 +75,16 @@ jobs:
             npm run create -- --name "$APP_NAME" --title-id "${{ inputs.titleid }}"
           fi
 
+      - name: Diagnostico - configs e docs de fonte do scaffold (antes de sobrescrever)
+        continue-on-error: true
+        working-directory: ps5-react
+        run: |
+          echo "=== $APP_NAME/tailwind.config.js (scaffold) ==="; cat "apps/$APP_NAME/tailwind.config.js" 2>/dev/null || echo "(nao existe)"
+          echo "=== $APP_NAME/assets.config.js (scaffold) ==="; cat "apps/$APP_NAME/assets.config.js" 2>/dev/null || echo "(nao existe)"
+          echo "=== arquivos do scaffold ==="; find "apps/$APP_NAME" -maxdepth 2 -type f | sort
+          echo "=== docs que citam fonts ==="; grep -rIl -i -E "fontFamily|\.ttf|assets\.config" README.md docs apps 2>/dev/null | head -20
+          for f in $(grep -rIl -i -E "fontFamily|assets\.config" README.md docs 2>/dev/null | head -3); do echo "--- $f ---"; grep -n -i -B2 -A12 -E "fontFamily|assets\.config" "$f" | head -80; done
+
       - name: Copy JSX source
         run: |
           DEST="$APP_DIR"
@@ -121,6 +131,11 @@ jobs:
           python3 -c "from PIL import Image; print('Pillow OK')"
           cd ps5-react
           npm run build -- --app "$APP_NAME"
+
+      - name: Mostrar bundle.log (so se o build falhar)
+        if: failure()
+        run: |
+          for f in ps5-react/.build/*/bundle.log; do echo "=== $f ==="; tail -n 120 "$f"; done
 
       - name: List dist
         if: always()
