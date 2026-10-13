@@ -1,9 +1,9 @@
 import {View, Image, Text} from '@ps5-react/core';
 import logo from './assets/logo.png';
 import hero from './assets/hero.png';
-import coverPPSA17019 from './covers/PPSA17019.jpg';
-import coverCUSA03041 from './covers/CUSA03041.jpg';
-import coverCUSA57220 from './covers/CUSA57220.jpg';
+import coverPPSA17019 from './covers/PPSA17019.png';
+import coverCUSA03041 from './covers/CUSA03041.png';
+import coverCUSA57220 from './covers/CUSA57220.png';
 
 const COVERS = {
   PPSA17019: coverPPSA17019,
