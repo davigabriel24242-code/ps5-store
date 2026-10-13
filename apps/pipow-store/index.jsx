@@ -1,123 +1,174 @@
 import {useState} from 'react';
-import {AppRegistry, View, Text, useController} from '@ps5-react/core';
+import {AppRegistry, View, Text, useController, FocusScope} from '@ps5-react/core';
 import catalog from './catalog.js';
-import {NativeArtwork} from './platform.jsx';
+import {Logo, Cover, HeroArt} from './platform.jsx';
 
 const tabs = ['Inicial', 'Explore', 'Biblioteca', 'Favoritos', 'Busca'];
 const id = a => a.titleid || a.name;
 const normalize = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
-function Label({children, muted = false}) {
-  return muted
-    ? <Text className="text-slate-400">{children}</Text>
-    : <Text className="text-white">{children}</Text>;
+function Label({children, kind = 'body'}) {
+  const cls = {
+    body: 'font-sans text-base text-pipow-text',
+    muted: 'font-sans text-sm text-pipow-muted',
+    tiny: 'font-sans text-xs text-pipow-muted2',
+    display: 'font-display text-4xl text-pipow-text',
+    displayLg: 'font-display text-6xl text-pipow-text',
+    tag: 'font-display text-sm text-pipow-cyan',
+  }[kind] || 'font-sans text-base text-pipow-text';
+  return <Text className={cls}>{children}</Text>;
 }
-function Control({label, active, focused}) {
-  return <View focused={focused} selected={active} className="rounded-xl bg-slate-800 px-6 py-4 focused:bg-sky-800"><Label>{label}</Label></View>;
+
+function Nav({screen, onSelect}) {
+  return <View className="flex-row gap-6 items-center">
+    {tabs.map(t => (
+      <View key={t} focusable onPress={() => onSelect(t)}
+        className={'px-4 py-2 rounded-lg ' + (screen === t ? 'bg-pipow-blue' : 'bg-pipow-surface') + ' focused:bg-pipow-blueHi'}>
+        <Text className="font-sans text-base text-pipow-text">{t}</Text>
+      </View>
+    ))}
+  </View>;
+}
+
+function PrimaryButton({label, onPress}) {
+  return <View focusable onPress={onPress}
+    className="px-8 py-4 rounded-xl bg-pipow-blue focused:bg-pipow-blueHi">
+    <Text className="font-sans text-lg text-pipow-text">↓ {label}</Text>
+  </View>;
+}
+
+function GhostButton({label, onPress}) {
+  return <View focusable onPress={onPress}
+    className="px-8 py-4 rounded-xl bg-pipow-surface border-2 border-pipow-border focused:border-pipow-cyan">
+    <Text className="font-sans text-lg text-pipow-text">{label}</Text>
+  </View>;
+}
+
+function Card({app, onPress}) {
+  return <View focusable onPress={onPress}
+    className="w-[280px] rounded-xl bg-pipow-surface border-2 border-transparent focused:border-pipow-cyan">
+    <Cover titleid={app.titleid} className="w-[280px] h-[158px] rounded-t-xl" />
+    <View className="p-4 gap-1">
+      <Text className="font-sans text-lg text-pipow-text">{app.name}</Text>
+      <Text className="font-sans text-sm text-pipow-muted">{app.category || 'Jogo'}</Text>
+    </View>
+  </View>;
 }
 
 export function PipowStore() {
   const [screen, setScreen] = useState('Inicial');
   const [selected, setSelected] = useState(null);
-  const [focus, setFocus] = useState(0);
   const [hero, setHero] = useState(0);
   const [favorites, setFavorites] = useState([]);
   const [query, setQuery] = useState('');
   const [genre, setGenre] = useState('Todos');
-  const [notice, setNotice] = useState('');
+
   const apps = catalog.apps || [];
   const featured = apps[hero] || apps[0];
   const genres = ['Todos', ...new Set(apps.map(a => a.category).filter(Boolean))];
+
   const list = screen === 'Favoritos' ? apps.filter(a => favorites.includes(id(a)))
     : screen === 'Biblioteca' ? []
     : screen === 'Busca' ? apps.filter(a => normalize([a.name, a.category, a.author].join(' ')).includes(normalize(query)))
     : screen === 'Explore' && genre !== 'Todos' ? apps.filter(a => a.category === genre)
     : apps;
-  const controls = tabs.map(label => ({label, run: () => {
-    setScreen(label); setSelected(null); setNotice(''); setFocus(0);
-  }}));
-  if (selected) {
-    controls.push(
-      {label: 'Obter ' + (selected.kind === 'game' ? 'jogo' : 'app'), run: () => setNotice('Download não integrado ao host nativo. Nenhum arquivo foi baixado.')},
-      {label: favorites.includes(id(selected)) ? 'Remover favorito' : 'Favoritar', run: () => setFavorites(v => v.includes(id(selected)) ? v.filter(x => x !== id(selected)) : [...v, id(selected)])}
-    );
-  } else {
-    if (screen === 'Inicial' && featured) controls.push(
-      {label: 'Próximo destaque', run: () => setHero(v => (v + 1) % apps.length)},
-      {label: 'Ver detalhes', run: () => {setSelected(featured); setFocus(0);}}
-    );
-    if (screen === 'Explore') genres.forEach(g => controls.push({label: g, run: () => {setGenre(g); setFocus(0);}}));
-    if (screen === 'Busca') {
-      Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZÇÁÉÍÓÚ0123456789').forEach(c => controls.push({label: c, run: () => setQuery(v => v + c)}));
-      controls.push({label: 'Espaço', run: () => setQuery(v => v + ' ')}, {label: 'Apagar', run: () => setQuery(v => v.slice(0, -1))}, {label: 'Limpar', run: () => setQuery('')});
-    }
-    list.forEach(a => controls.push({label: a.name, run: () => {setSelected(a); setFocus(0);}}));
-  }
-  useController(action => {
-    if (action === 'previous') setFocus(v => (v - 1 + controls.length) % controls.length);
-    if (action === 'next') setFocus(v => (v + 1) % controls.length);
-    if (action === 'confirm') controls[Math.min(focus, controls.length - 1)]?.run();
-    if (action === 'back') {
-      if (notice) setNotice('');
-      else if (selected) {setSelected(null); setFocus(0);}
-      else {setScreen('Inicial'); setFocus(0);}
-    }
-  });
-  const chooseFocus = label => controls.findIndex(c => c.label === label);
-  const start = Math.max(0, list.findIndex(a => a.name === controls[focus]?.label) - 2);
+
+  const onSelect = t => { setScreen(t); setSelected(null); };
+
+  const obtain = app => {
+    const url = app.artifact_url || (app.downloads && app.downloads[0] && app.downloads[0].url);
+    if (!url) return;
+    console.log('Obter:', url);
+  };
+
+  const toggleFav = app => {
+    const k = id(app);
+    setFavorites(v => v.includes(k) ? v.filter(x => x !== k) : [...v, k]);
+  };
+
+  const detail = selected;
 
   return (
-    <View className="bg-slate-950 p-8">
-      <NativeArtwork kind="logo" />
-      <View className="flex-row">{tabs.map(t => <Control key={t} label={t} active={screen === t} focused={focus === chooseFocus(t)} />)}</View>
-      {selected ? (
-        <View className="p-8">
-          <NativeArtwork kind="hero" titleid={selected.titleid} />
-          <Text className="text-4xl text-white">{selected.name}</Text>
-          <Label muted>{selected.category} · {selected.author} · v{selected.version}</Label>
-          <Label>{selected.description}</Label>
-          <View className="flex-row">{controls.slice(5).map((c, i) => <Control key={c.label} label={c.label} focused={focus === i + 5} />)}</View>
-          <Label muted>{selected.meta_line}</Label>
-          <Label muted>{selected.size_gb ?? selected.downloads?.[0]?.size_gb ?? 'Tamanho não informado'} GB</Label>
+    <FocusScope autoFocus wrap>
+      <View className="w-screen h-screen bg-pipow-bg p-10 gap-6">
+        <View className="flex-row items-center gap-8">
+          <Logo />
+          <Nav screen={screen} onSelect={onSelect} />
         </View>
-      ) : (
-        <View className="p-8">
-          {screen === 'Inicial' && featured && (
-            <View>
-              <NativeArtwork kind="hero" titleid={featured.titleid} />
-              <Label>{featured.hero_tag || 'EM DESTAQUE'}</Label>
-              <Text className="text-4xl text-white">{featured.name}</Text>
-              <Label>{featured.category}</Label><Label muted>{featured.description}</Label>
-              <View className="flex-row">{controls.slice(5, 7).map((c, i) => <Control key={c.label} label={c.label} focused={focus === i + 5} />)}</View>
-              <Text className="text-xl text-white">Populares</Text>
-            </View>
-          )}
-          {screen === 'Explore' && (
-            <View>
-              <Text className="text-4xl text-white">Encontre seu próximo universo.</Text>
-              <Label muted>Explore por gênero. Descubra no seu ritmo.</Label>
-              <View className="flex-row">{genres.map(g => <Control key={g} label={g} active={genre === g} focused={focus === chooseFocus(g)} />)}</View>
-            </View>
-          )}
-          {screen === 'Biblioteca' && <View><Text className="text-4xl text-white">Seu próximo capítulo.</Text><Label muted>Instalação e downloads não integrados ao host nativo.</Label></View>}
-          {screen === 'Favoritos' && <View><Text className="text-4xl text-white">Mundos que você quer visitar.</Text><Label muted>Favoritos desta sessão. Salvamento permanente não integrado.</Label></View>}
-          {screen === 'Busca' && <View><Text className="text-4xl text-white">Qual será o próximo destino?</Text><Label>{query || 'Buscar no catálogo'}</Label><Label muted>Teclado: navegue com D-pad e confirme com Cross.</Label><Control label={controls[focus]?.label || ''} focused={true} /></View>}
-          <View className="flex-row">
-            {list.slice(start, start + 5).map(a => {
-              const isFocused = focus === chooseFocus(a.name);
-              return (
-              <View key={id(a)} focused={isFocused} className="rounded-xl bg-slate-800 p-4 focused:bg-sky-800">
-                <NativeArtwork kind="card" titleid={a.titleid} />
-                <Label>{a.name}</Label><Label muted>{a.category}</Label>
+
+        {detail ? (
+          <View className="flex-row gap-8 flex-1">
+            <HeroArt titleid={detail.titleid} className="w-[720px] h-full rounded-2xl" />
+            <View className="flex-1 gap-4 p-6">
+              <Label kind="tag">{(detail.hero_tag || 'EM DESTAQUE').toUpperCase()}</Label>
+              <Label kind="displayLg">{detail.name}</Label>
+              <Label kind="muted">{detail.category} · {detail.author} · v{detail.version}</Label>
+              <View className="h-2" />
+              <Label>{detail.description}</Label>
+              <View className="h-4" />
+              <View className="flex-row gap-3">
+                <PrimaryButton label={detail.kind === 'game' ? 'OBTER JOGO' : 'OBTER APP'} onPress={() => obtain(detail)} />
+                <GhostButton label={favorites.includes(id(detail)) ? '♥ Favoritado' : '♡ Favoritar'} onPress={() => toggleFav(detail)} />
               </View>
-              );
-            })}
+              <View className="h-2" />
+              <Label kind="muted">{detail.meta_line || ''}</Label>
+              <Label kind="tiny">D-pad: navegar · X: selecionar · Circle: voltar</Label>
+            </View>
           </View>
-        </View>
-      )}
-      {notice && <View className="rounded-xl bg-slate-800 p-4"><Label>{notice}</Label></View>}
-      <Label muted>D-pad: navegar · Cross: selecionar · Circle: voltar</Label>
-    </View>
+        ) : screen === 'Inicial' && featured ? (
+          <View className="gap-6 flex-1">
+            <View className="flex-row gap-8 h-[420px]">
+              <HeroArt titleid={featured.titleid} className="w-[820px] h-full rounded-2xl" />
+              <View className="flex-1 gap-3 p-4">
+                <Label kind="tag">{(featured.hero_tag || 'EM DESTAQUE').toUpperCase()}</Label>
+                <Label kind="displayLg">{featured.name}</Label>
+                <Label kind="muted">{featured.category}</Label>
+                <View className="h-2" />
+                <Label>{featured.description}</Label>
+                <View className="h-4" />
+                <View className="flex-row gap-3">
+                  <PrimaryButton label="OBTER" onPress={() => obtain(featured)} />
+                  <GhostButton label="Ver detalhes" onPress={() => setSelected(featured)} />
+                  <GhostButton label="Próximo" onPress={() => setHero(v => (v + 1) % apps.length)} />
+                </View>
+              </View>
+            </View>
+            <Text className="font-display text-3xl text-pipow-text">Populares</Text>
+            <View className="flex-row gap-6 flex-wrap">
+              {apps.map(a => <Card key={id(a)} app={a} onPress={() => obtain(a)} />)}
+            </View>
+          </View>
+        ) : (
+          <View className="gap-6 flex-1">
+            {screen === 'Explore' && (
+              <View className="gap-4">
+                <Text className="font-display text-4xl text-pipow-text">Explore</Text>
+                <View className="flex-row gap-3 flex-wrap">
+                  {genres.map(g => (
+                    <View key={g} focusable onPress={() => setGenre(g)}
+                      className={'px-5 py-3 rounded-full ' + (genre === g ? 'bg-pipow-blue' : 'bg-pipow-surface') + ' focused:bg-pipow-blueHi'}>
+                      <Text className="font-sans text-base text-pipow-text">{g}</Text>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            )}
+            {screen === 'Biblioteca' && <Text className="font-display text-4xl text-pipow-text">Biblioteca</Text>}
+            {screen === 'Favoritos' && <Text className="font-display text-4xl text-pipow-text">Favoritos</Text>}
+            {screen === 'Busca' && (
+              <View className="gap-4">
+                <Text className="font-display text-4xl text-pipow-text">Busca</Text>
+                <Text className="font-sans text-lg text-pipow-muted">{query || 'Navegue com D-pad'}</Text>
+              </View>
+            )}
+            <View className="flex-row gap-6 flex-wrap">
+              {list.map(a => <Card key={id(a)} app={a} onPress={() => setSelected(a)} />)}
+            </View>
+          </View>
+        )}
+      </View>
+    </FocusScope>
   );
 }
+
 AppRegistry.registerComponent('pipow-store', () => PipowStore);
