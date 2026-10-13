@@ -1,6 +1,12 @@
 export default {
   baseWidth: 1280,
   theme: {
+    // fontFamily fica direto em theme (NAO em theme.extend): o erro do motor cita "theme.fontFamily".
+    // O valor é o nome do arquivo .ttf em fonts/ (sem a extensão), o mesmo que o import devolve.
+    fontFamily: {
+      sans: 'WorkSans-Regular',
+      display: 'Orbitron-Bold',
+    },
     extend: {
       colors: {
         pipow: {
@@ -14,11 +20,6 @@ export default {
           muted: '#A5ADBE',
           border: '#303A50',
         },
-      },
-      // O nome é o do arquivo .ttf em fonts/ (sem a extensão).
-      fontFamily: {
-        sans: 'WorkSans-Regular',
-        display: 'Orbitron-Bold',
       },
     },
   },

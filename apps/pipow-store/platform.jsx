@@ -1,11 +1,14 @@
 import {useRef,useEffect} from 'react';
 import * as Core from '@ps5-react/core';
 import {Image} from '@ps5-react/core';
+import workSans from './fonts/WorkSans-Regular.ttf';
+import orbitron from './fonts/Orbitron-Bold.ttf';
 import logo from './assets/logo.png';
 import hero from './assets/hero.png';
 import a from './covers/PPSA17019.png';
 import b from './covers/CUSA03041.png';
 import c from './covers/CUSA57220.png';
+export const FONTS={sans:workSans,display:orbitron};
 const covers={PPSA17019:a,CUSA03041:b,CUSA57220:c};
 export function Logo(){return <Image source={logo} resizeMode="contain" className="w-[150px] h-[48px]"/>;}
 export function Background(){return <Image source={hero} resizeMode="cover" className="absolute top-0 left-0 w-[1280px] h-[720px]"/>;}
