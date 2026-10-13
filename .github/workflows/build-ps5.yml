@@ -57,12 +57,6 @@ jobs:
           /opt/homebrew/bin/python3 -m pip install --break-system-packages Pillow
           /opt/homebrew/bin/python3 -c "from PIL import Image; print('Pillow homebrew OK')"
 
-      - name: Cache deps externas
-        uses: actions/cache@v4
-        with:
-          path: ps5-react/.deps
-          key: deps-macos14-${{ hashFiles('ps5-react/tools/**', 'ps5-react/package-lock.json') }}
-
       - name: Install npm deps
         working-directory: ps5-react
         run: npm ci
@@ -89,13 +83,33 @@ jobs:
             cp "ps5-store/apps/pipow-store/$f" "$DEST/$f"
           done
 
+      - name: Copy configs (tailwind + assets)
+        run: |
+          for f in tailwind.config.js assets.config.js; do
+            if [ -f "ps5-store/apps/pipow-store/$f" ]; then
+              cp "ps5-store/apps/pipow-store/$f" "$APP_DIR/$f"
+            fi
+          done
+
+      - name: Copy fonts
+        run: |
+          mkdir -p "$APP_DIR/fonts"
+          if [ -d "ps5-store/apps/pipow-store/fonts" ]; then
+            cp ps5-store/apps/pipow-store/fonts/*.ttf "$APP_DIR/fonts/" 2>/dev/null || echo "::warning::nenhum .ttf em fonts/"
+          fi
+
       - name: Copy assets
         run: |
           mkdir -p "$APP_DIR/assets" "$APP_DIR/covers"
           for f in logo.png hero.png; do
-            cp "ps5-store/assets/$f" "$APP_DIR/assets/" || echo "::warning::asset $f nao encontrado"
+            cp "ps5-store/apps/pipow-store/assets/$f" "$APP_DIR/assets/" || echo "::warning::asset $f nao encontrado"
           done
-          cp ps5-store/covers/*.jpg "$APP_DIR/covers/" 2>/dev/null || echo "::warning::nenhuma capa .jpg encontrada"
+          cp ps5-store/apps/pipow-store/covers/*.jpg "$APP_DIR/covers/" 2>/dev/null || echo "::warning::nenhuma capa .jpg encontrada"
+
+      - name: Verificar layout do app
+        run: |
+          echo "=== $APP_DIR ==="
+          find "$APP_DIR" -maxdepth 2 -type f | sort
 
       - name: Build
         shell: bash
