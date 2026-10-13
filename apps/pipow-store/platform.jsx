@@ -1,57 +1,57 @@
-import {View, Image, Text} from '@ps5-react/core';
+import {useRef,useEffect} from 'react';
+import * as Core from '@ps5-react/core';
+import {Image} from '@ps5-react/core';
 import logo from './assets/logo.png';
 import hero from './assets/hero.png';
-import coverPPSA17019 from './covers/PPSA17019.png';
-import coverCUSA03041 from './covers/CUSA03041.png';
-import coverCUSA57220 from './covers/CUSA57220.png';
-
-const COVERS = {
-  PPSA17019: coverPPSA17019,
-  CUSA03041: coverCUSA03041,
-  CUSA57220: coverCUSA57220,
-};
-
-// O plugin Tailwind so aceita classes fixas no build.
-// Por isso cada tamanho tem seu proprio className literal (sem objetos nem variaveis).
-
-export function Logo() {
-  return <Image source={logo} resizeMode="contain" className="w-[150px] h-[40px]" />;
+import a from './covers/PPSA17019.png';
+import b from './covers/CUSA03041.png';
+import c from './covers/CUSA57220.png';
+const covers={PPSA17019:a,CUSA03041:b,CUSA57220:c};
+export function Logo(){return <Image source={logo} resizeMode="contain" className="w-[150px] h-[48px]"/>;}
+export function Background(){return <Image source={hero} resizeMode="cover" className="absolute top-0 left-0 w-[1280px] h-[720px]"/>;}
+export function Banner(){return <Image source={hero} resizeMode="cover" className="absolute top-0 left-0 w-[1168px] h-[140px] rounded-xl"/>;}
+export function Cover({titleid,size}){
+const src=covers[titleid]||hero;
+if(size==='favorite')return <Image source={src} resizeMode="cover" className="w-[272px] h-[240px] rounded-xl"/>;
+if(size==='library')return <Image source={src} resizeMode="cover" className="w-[368px] h-[200px] rounded-xl"/>;
+return <Image source={src} resizeMode="cover" className="w-[216px] h-[122px] rounded-lg"/>;
 }
 
-function CoverFallback({titleid, size}) {
-  const label = String(titleid || '----').slice(0, 4);
-  if (size === 'sm') {
-    return (
-      <View className="w-[200px] h-[112px] rounded-lg bg-pipow-surface2 items-center justify-center">
-        <Text className="font-display text-2xl text-pipow-muted">{label}</Text>
-      </View>
-    );
-  }
-  if (size === 'lg') {
-    return (
-      <View className="w-[272px] h-[153px] rounded-lg bg-pipow-surface2 items-center justify-center">
-        <Text className="font-display text-2xl text-pipow-muted">{label}</Text>
-      </View>
-    );
-  }
-  return (
-    <View className="w-[220px] h-[124px] rounded-lg bg-pipow-surface2 items-center justify-center">
-      <Text className="font-display text-2xl text-pipow-muted">{label}</Text>
-    </View>
-  );
+// ---- Animações (API Animated do motor; se o motor não exportar Animated, tudo vira no-op e o app roda como antes) ----
+const A=Core.Animated;
+const ease=Core.Easing?Core.Easing.cubicOut:undefined;
+const canAnimate=!!(A&&A.Value&&A.timing&&A.View);
+function useAnim(initial){
+const ref=useRef(null);
+if(ref.current===null&&canAnimate)ref.current=new A.Value(initial);
+useEffect(()=>()=>{const v=ref.current;if(v&&v.destroy)v.destroy();},[]);
+return ref.current;
 }
-
-export function Cover({titleid, size = 'md'}) {
-  const src = COVERS[titleid];
-  if (!src) return <CoverFallback titleid={titleid} size={size} />;
-  if (size === 'sm') return <Image source={src} resizeMode="cover" className="w-[200px] h-[112px] rounded-lg" />;
-  if (size === 'lg') return <Image source={src} resizeMode="cover" className="w-[272px] h-[153px] rounded-lg" />;
-  return <Image source={src} resizeMode="cover" className="w-[220px] h-[124px] rounded-lg" />;
+function run(v,toValue,duration){
+const a=A.timing(v,{toValue,duration,easing:ease,useNativeDriver:true});
+a.start();
+return a;
 }
-
-export function Art({titleid, size = 'home'}) {
-  const src = COVERS[titleid] || hero;
-  if (size === 'detail') return <Image source={src} resizeMode="cover" className="w-[600px] h-[520px] rounded-2xl" />;
-  if (size === 'banner') return <Image source={src} resizeMode="cover" className="w-[480px] h-[148px] rounded-xl" />;
-  return <Image source={src} resizeMode="cover" className="w-[568px] h-[320px] rounded-2xl" />;
+function halt(a){try{a.stop();}catch(e){}}
+// Entrada de tela: fade + subida suave. Use com key para repetir a cada troca de tela.
+export function Enter({children}){
+const o=useAnim(0);
+const y=useAnim(20);
+useEffect(()=>{
+if(!o||!y)return undefined;
+const a=run(o,1,320);
+const b=run(y,0,320);
+return()=>{halt(a);halt(b);};
+},[]);
+if(!o||!y)return <>{children}</>;
+return <A.View style={{position:'absolute',top:0,left:0,right:0,bottom:0,opacity:o,transform:[{translateY:y}]}}>{children}</A.View>;
+}
+// Zoom ao focar: ligue onFocus/onBlur no View focusável e envolva o conteúdo com <Zoom>.
+export function useZoom(to){
+const v=useAnim(1);
+return {v,onFocus(){if(v)run(v,to,160);},onBlur(){if(v)run(v,1,160);}};
+}
+export function Zoom({z,children}){
+if(!z.v)return <>{children}</>;
+return <A.View style={{transform:[{scale:z.v}]}}>{children}</A.View>;
 }
